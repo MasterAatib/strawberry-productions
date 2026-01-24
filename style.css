@@ -12,7 +12,8 @@ body {
 }
 
 .logo img {
-  max-width: 600px;
+  width: 600px;
+  max-width: 100%;
 }
 
 /* LIST CONTAINER */
@@ -51,6 +52,7 @@ body {
 .addon-card a:hover {
   text-decoration: underline;
 }
+
 
 
 
