@@ -1,59 +1,54 @@
 body {
-  background: #020617;
-  color: #e5e7eb;
-  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  background: linear-gradient(#1e0a5c, #0b042d);
+  font-family: Arial, sans-serif;
+  color: white;
+}
+
+/* LOGO */
+.logo {
   text-align: center;
+  padding: 20px;
 }
 
-/* MAIN BOX */
-.addon-box {
-  max-width: 420px;
-  margin: 80px auto;
-  padding: 30px;
-
-  background: rgba(17, 24, 39, 0.9);
-  border-radius: 18px;
-
-  box-shadow: 0 20px 40px rgba(0,0,0,0.7);
-  text-align: center;
+.logo img {
+  max-width: 220px;
 }
 
-/* TITLE */
-.addon-box h1 {
-  font-family: 'Cinzel', serif;
-  font-size: 42px;
-  margin-bottom: 10px;
-}
-
-/* SUBTITLE */
-.subtitle {
-  color: #9ca3af;
-  margin-bottom: 20px;
-}
-
-/* IMAGE */
-.addon-box img {
+/* LIST CONTAINER */
+.addon-list {
   width: 100%;
-  max-width: 400px;
-  border-radius: 14px;
-  margin: 20px 0;
+  max-width: 420px;
+  margin: auto;
 }
 
-/* BUTTON LINK */
-.download-link {
-  display: inline-block;
-  margin-top: 15px;
-  padding: 12px 26px;
+/* ADDON CARD */
+.addon-card {
+  background: #1546a0;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 15px;
+  text-align: center;
+}
 
-  background: #38bdf8;
-  color: #020617;
-  border-radius: 30px;
+/* ADDON IMAGE */
+.addon-card img {
+  width: 100%;
+  background: white;
+  border-radius: 6px;
+}
+
+/* ADDON LINK */
+.addon-card a {
+  display: block;
+  margin-top: 8px;
+  padding: 6px;
+  color: #ffffff;
   text-decoration: none;
-  font-weight: 600;
+  font-weight: bold;
 }
 
-.download-link:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(56,189,248,0.4);
+.addon-card a:hover {
+  text-decoration: underline;
 }
 
