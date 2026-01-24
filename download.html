@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Genshin X Craft | Minecraft Addon</title>
+
+  <!-- Google Font (Genshin-like vibe) -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #111827;
+      --accent: #38bdf8;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(180deg, #020617, var(--bg));
+      color: var(--text);
+    }
+
+    header {
+      background: url("https://images.unsplash.com/photo-1549880338-65ddcdfd017b") center/cover;
+      padding: 80px 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    header::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(2,6,23,0.75);
+    }
+
+    header > div {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    header h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      color: var(--muted);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 25px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    .card h2 {
+      font-family: 'Cinzel', serif;
+      margin-top: 0;
+      border-bottom: 1px solid #1f2933;
+      padding-bottom: 10px;
+    }
+
+    .features ul {
+      padding-left: 20px;
+    }
+
+    .features li {
+      margin-bottom: 8px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .info-box {
+      background: #020617;
+      border-radius: 12px;
+      padding: 15px;
+      border: 1px solid #1f2933;
+    }
+
+    .download {
+      text-align: center;
+    }
+
+    .download a {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 12px 26px;
+      background: var(--accent);
+      color: #020617;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .download a:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(56,189,248,0.4);
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+  
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .gallery img {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid #1f2933;
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .gallery img:hover {
+      transform: scale(1.03);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div>
+      <h1>Genshin X Craft</h1>
+      <p>Bring the world of Genshin Impact into Minecraft Bedrock Edition</p>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section class="card">
+      <h2>Screenshots</h2>
+      <p>Preview the addon in action:</p>
+      <div class="gallery">
+        <!-- Replace image paths with your own screenshots -->
+        <img src="images/screenshot1.png" alt="Screenshot 1">
+        <img src="images/screenshot2.png" alt="Screenshot 2">
+        <img src="images/screenshot3.png" alt="Screenshot 3">
+      </div>
+    </section>
+
+
+    <section class="card">
+      <h2>Description</h2>
+      <p>
+        <strong>Genshin X Craft</strong> is a Minecraft Bedrock addon inspired by
+        <em>Genshin Impact</em>. It introduces elemental weapons, mobs, and mechanics
+        designed to feel close to the original game while remaining balanced
+        for survival gameplay.
+      </p>
+      <p>
+        Explore a fantasy-style experience where elements matter, combat feels
+        dynamic, and your Minecraft world becomes infused with Genshin energy.
+      </p>
+    </section>
+
+    <section class="card features">
+      <h2>Features</h2>
+      <ul>
+        <li>Custom Genshin-inspired weapons</li>
+        <li>Elemental effects (Pyro, Cryo, Electro, etc.)</li>
+        <li>New mobs and bosses</li>
+        <li>Survival-friendly balance</li>
+        <li>Bedrock Edition support</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Addon Info</h2>
+      <div class="info-grid">
+        <div class="info-box"><strong>Game Version:</strong><br> Minecraft Bedrock</div>
+        <div class="info-box"><strong>Category:</strong><br> Addons / RPG</div>
+        <div class="info-box"><strong>Creator:</strong><br> Your Name</div>
+        <div class="info-box"><strong>Status:</strong><br> Ongoing</div>
+      </div>
+    </section>
+
+    <section class="card download">
+      <h2>Download</h2>
+      <p>Get the latest version of the addon below:</p>
+      <a href="#">Download Addon</a>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Not affiliated with Mojang or HoYoverse. Fan-made project.</p>
+  </footer>
+
+</body>
+</html>
