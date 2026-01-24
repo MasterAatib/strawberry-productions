@@ -5,21 +5,54 @@ body {
   text-align: center;
 }
 
-h1 {
+/* MAIN BOX */
+.addon-box {
+  max-width: 720px;
+  margin: 80px auto;
+  padding: 30px;
+
+  background: rgba(17, 24, 39, 0.9);
+  border-radius: 18px;
+
+  box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+  text-align: center;
+}
+
+/* TITLE */
+.addon-box h1 {
   font-family: 'Cinzel', serif;
-  font-size: 48px;
+  font-size: 42px;
+  margin-bottom: 10px;
 }
 
-a {
-  color: #38bdf8;
+/* SUBTITLE */
+.subtitle {
+  color: #9ca3af;
+  margin-bottom: 20px;
+}
+
+/* IMAGE */
+.addon-box img {
+  width: 100%;
+  max-width: 600px;
+  border-radius: 14px;
+  margin: 20px 0;
+}
+
+/* BUTTON LINK */
+.download-link {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 12px 26px;
+
+  background: #38bdf8;
+  color: #020617;
+  border-radius: 30px;
   text-decoration: none;
+  font-weight: 600;
 }
 
-a:hover {
-  text-decoration: underline;
-}
-
-img {
-  border-radius: 12px;
-  margin-top: 20px;
+.download-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(56,189,248,0.4);
 }
