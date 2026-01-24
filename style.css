@@ -52,6 +52,12 @@ body {
 .addon-card a:hover {
   text-decoration: underline;
 }
+.header {
+  background: url("images/genshin_background.png") center / cover;
+  padding: 80px 20px;
+  text-align: center;
+  position: relative;
+}
 
 
 
