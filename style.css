@@ -4,9 +4,7 @@ body {
   font-family: Arial, sans-serif;
   color: white;
 }
-header {
-  background: red;
-}
+
 /* LOGO */
 .logo {
   text-align: center;
@@ -54,6 +52,7 @@ header {
 .addon-card a:hover {
   text-decoration: underline;
 }
+
 
 
 
