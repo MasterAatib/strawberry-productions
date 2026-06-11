@@ -1,237 +1,262 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Strawberry Productions</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strawberry Productions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
 
-    body {
-      background: #0d1117;
-      color: white;
-      height: 100vh;
-      overflow: hidden;   /* ← stops browser from scrolling */
-    }
+        body {
+            background: #0d1117;
+            color: white;
+            height: 100vh;
+            overflow: hidden;
+        }
 
-    /* ===== SCROLLABLE CONTAINER ===== */
-    .main-scroll {
-      height: 100vh;
-      overflow-y: auto;
-      overflow-x: hidden;
-      scroll-behavior: smooth;
-    }
+        /* ===== SCROLLABLE CONTAINER ===== */
+        .main-scroll {
+            height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
 
-    /* Custom scrollbar */
-    .main-scroll::-webkit-scrollbar {
-      width: 10px;
-    }
-    .main-scroll::-webkit-scrollbar-thumb {
-      background: #ff2e55;
-      border-radius: 20px;
-    }
-    .main-scroll::-webkit-scrollbar-track {
-      background: #161b22;
-    }
+        /* Custom scrollbar */
+        .main-scroll::-webkit-scrollbar {
+            width: 10px;
+        }
+        .main-scroll::-webkit-scrollbar-thumb {
+            background: #ff2e55;
+            border-radius: 20px;
+        }
+        .main-scroll::-webkit-scrollbar-track {
+            background: #161b22;
+        }
 
-    /* ----- LOGO ----- */
-    .logo {
-      text-align: center;
-      padding: 30px 0 20px;
-    }
+        /* ----- LOGO ----- */
+        .logo {
+            text-align: center;
+            padding: 40px 0 30px;
+        }
 
-    .logo img {
-      width: 70vw;               /* desktop: 70% screen width */
-      max-width: 800px;
-      height: auto;
-      display: inline-block;
-    }
+        .logo img {
+            width: 70vw;
+            max-width: 800px;
+            height: auto;
+            display: inline-block;
+        }
 
-    /* ----- SOCIAL ICONS ROW ----- */
-    .social-row {
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      margin: 0 auto 50px;
-      flex-wrap: wrap;
-    }
+        /* ----- SOCIAL ICONS ROW ----- */
+        .social-row {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 0 auto 50px;
+            flex-wrap: wrap;
+        }
 
-    .social-row a img {
-      width: 60px;
-      height: 60px;
-      object-fit: contain;
-      transition: transform 0.3s, filter 0.3s;
-    }
+        .social-row a img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            transition: transform 0.3s, filter 0.3s;
+        }
 
-    .social-row a img:hover {
-      transform: scale(1.15);
-      filter: drop-shadow(0 0 6px #ff2e55);
-    }
+        .social-row a img:hover {
+            transform: scale(1.15);
+            filter: drop-shadow(0 0 6px #ff2e55);
+        }
 
-    /* ----- ADDON GRID ----- */
-    .addon-list {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);   /* desktop: 3 cards per row */
-      gap: 25px;
-      padding: 0 5% 50px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+        /* ----- ADDON GRID (FLUID – FULL WIDTH) ----- */
+        .addon-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));  /* ← fills all available width */
+            gap: 25px;
+            padding: 0 3% 50px;  /* smaller side padding on desktop */
+        }
 
-    .addon-card {
-      background: #161b22;
-      border: 1px solid #2d333b;
-      border-radius: 15px;
-      overflow: hidden;
-      transition: transform 0.3s;
-      display: flex;
-      flex-direction: column;
-    }
+        .addon-card {
+            background: #161b22;
+            border: 1px solid #2d333b;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+            position: relative;   /* for the gradient overlay */
+        }
 
-    .addon-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.4);
-    }
+        .addon-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+        }
 
-    .addon-card img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      display: block;
-    }
+        /* Gradient shine effect (like the Asset Hub store) */
+        .addon-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent, rgba(255,46,85,.12));
+            opacity: 0;
+            transition: 0.3s;
+            pointer-events: none;
+            z-index: 1;
+        }
 
-    .card-content {
-      padding: 15px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
+        .addon-card:hover::before {
+            opacity: 1;
+        }
 
-    .card-content h3 {
-      font-size: 20px;
-      margin-bottom: 8px;
-    }
+        .addon-card img {
+            width: 400px;
+            height: auto;        /* taller for more visual impact */
+            object-fit: cover;
+            display: block;
+        }
 
-    .card-content .description {
-      color: #9ca3af;
-      font-size: 14px;
-      line-height: 1.5;
-      margin-bottom: 15px;
-      flex: 1;
-    }
+        .card-content {
+            padding: 15px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;   /* above the gradient */
+            z-index: 2;
+        }
 
-    .card-content .view-btn {
-      display: block;
-      text-align: center;
-      padding: 10px;
-      background: #ff2e55;
-      color: white;
-      text-decoration: none;
-      border-radius: 8px;
-      font-weight: bold;
-      margin-top: auto;
-    }
+        .card-content h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
 
-    /* ----- RESPONSIVE (Mobile) ----- */
-    @media (max-width: 768px) {
-      .logo img {
-        width: 90vw;            /* mobile: 90% */
-      }
+        .card-content .description {
+            color: #9ca3af;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            flex: 1;
+        }
 
-      .social-row {
-        gap: 20px;
-      }
+        .card-content .view-btn {
+            display: block;
+            text-align: center;
+            padding: 10px;
+            background: #ff2e55;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            margin-top: auto;
+            transition: background 0.2s;
+        }
 
-      .social-row a img {
-        width: 50px;
-        height: 50px;
-      }
+        .view-btn:hover {
+            background: #e0294c;
+        }
 
-      .addon-list {
-        grid-template-columns: 1fr;   /* 1 card per row */
-      }
+        /* ----- RESPONSIVE (Mobile) ----- */
+        @media (max-width: 768px) {
+            .logo img {
+                width: 90vw;       /* mobile: 90% */
+            }
 
-      .addon-card img {
-        height: 180px;
-      }
-    }
-  </style>
+            .social-row {
+                gap: 20px;
+            }
+
+            .social-row a img {
+                width: 50px;
+                height: 50px;
+            }
+
+            .addon-list {
+                grid-template-columns: 1fr;   /* 1 card per row */
+                padding: 0 5% 40px;
+            }
+
+            .addon-card img {
+                height: 200px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-  <!-- ========== SCROLLABLE CONTAINER ========== -->
-  <div class="main-scroll">
+    <!-- ========== SCROLLABLE CONTAINER ========== -->
+    <div class="main-scroll">
 
-    <!-- LOGO -->
-    <div class="logo">
-      <img src="images/logo-wide.png" alt="Strawberry Productions">
+        <!-- LOGO -->
+        <div class="logo">
+            <img src="images/logo.png" alt="Strawberry Productions">
+        </div>
+
+        <!-- SOCIAL ICONS (Store, YouTube, Discord) -->
+        <div class="social-row">
+            <a href="https://your-store-link" target="_blank">
+                <img src="images/store-icon.png" alt="Store">
+            </a>
+            <a href="https://youtube.com/@yourchannel" target="_blank">
+                <img src="images/youtube-icon.png" alt="YouTube">
+            </a>
+            <a href="https://discord.gg/yourinvite" target="_blank">
+                <img src="images/discord-icon.png" alt="Discord">
+            </a>
+        </div>
+
+        <!-- ADDON LIST (FLUID GRID) -->
+        <div class="addon-list">
+
+            <!-- ADDON CARD 1 -->
+            <div class="addon-card">
+                <img src="images/genshin_x_craft.png" alt="Genshin X Craft">
+                <div class="card-content">
+                    <h3>Genshin X Craft</h3>
+                    <p class="description">An epic Genshin Impact themed addon with new weapons, mobs and biomes.</p>
+                    <a href="pages/genshin_x_craft.html" class="view-btn">View Addon</a>
+                </div>
+            </div>
+
+            <!-- ADDON CARD 2 -->
+            <div class="addon-card">
+                <img src="images/coldwheels.png" alt="Coldwheels">
+                <div class="card-content">
+                    <h3>Coldwheels</h3>
+                    <p class="description">Adds drivable Hot Wheels style cars to your Minecraft world.</p>
+                    <a href="pages/coldwheels.html" class="view-btn">View Addon</a>
+                </div>
+            </div>
+
+            <!-- ADDON CARD 3 -->
+            <div class="addon-card">
+                <img src="images/starter_house.png" alt="Starter House">
+                <div class="card-content">
+                    <h3>Starter House</h3>
+                    <p class="description">Spawn in a fully furnished survival house right when you start.</p>
+                    <a href="pages/starter_house.html" class="view-btn">View Addon</a>
+                </div>
+            </div>
+
+            <!-- ADDON CARD 4 -->
+            <div class="addon-card">
+                <img src="images/addon4.png" alt="Another Addon">
+                <div class="card-content">
+                    <h3>Another Addon</h3>
+                    <p class="description">Short description goes here – just edit this text.</p>
+                    <a href="pages/new_addon.html" class="view-btn">View Addon</a>
+                </div>
+            </div>
+
+            <!-- Copy the block above to add more cards -->
+
+        </div>
+
     </div>
-
-    <!-- SOCIAL ICONS (Store, YouTube, Discord) -->
-    <div class="social-row">
-      <a href="https://your-store-link" target="_blank">
-        <img src="images/store-icon.png" alt="Store">
-      </a>
-      <a href="https://youtube.com/@yourchannel" target="_blank">
-        <img src="images/youtube-icon.png" alt="YouTube">
-      </a>
-      <a href="https://discord.gg/yourinvite" target="_blank">
-        <img src="images/discord-icon.png" alt="Discord">
-      </a>
-    </div>
-
-    <!-- ADDON LIST -->
-    <div class="addon-list">
-
-      <!-- ADDON CARD 1 -->
-      <div class="addon-card">
-        <img src="images/addon1.png" alt="Genshin X Craft">
-        <div class="card-content">
-          <h3>Genshin X Craft</h3>
-          <p class="description">An epic Genshin Impact themed addon with new weapons, mobs and biomes.</p>
-          <a href="pages/genshin_x_craft.html" class="view-btn">View Addon</a>
-        </div>
-      </div>
-
-      <!-- ADDON CARD 2 -->
-      <div class="addon-card">
-        <img src="images/coldwheels.png" alt="Coldwheels">
-        <div class="card-content">
-          <h3>Coldwheels</h3>
-          <p class="description">Adds drivable Hot Wheels style cars to your Minecraft world.</p>
-          <a href="pages/coldwheels.html" class="view-btn">View Addon</a>
-        </div>
-      </div>
-
-      <!-- ADDON CARD 3 -->
-      <div class="addon-card">
-        <img src="images/starter_house.png" alt="Starter House">
-        <div class="card-content">
-          <h3>Starter House</h3>
-          <p class="description">Spawn in a fully furnished survival house right when you start.</p>
-          <a href="pages/starter_house.html" class="view-btn">View Addon</a>
-        </div>
-      </div>
-
-      <!-- ADDON CARD 4 (example extra) -->
-      <div class="addon-card">
-        <img src="images/addon4.png" alt="New Addon">
-        <div class="card-content">
-          <h3>Another Addon</h3>
-          <p class="description">Short description goes here – just edit this text.</p>
-          <a href="pages/new_addon.html" class="view-btn">View Addon</a>
-        </div>
-      </div>
-
-    </div>
-
-  </div>
-  <!-- ========== END SCROLLABLE CONTAINER ========== -->
+    <!-- ========== END SCROLLABLE CONTAINER ========== -->
 
 </body>
 </html>
