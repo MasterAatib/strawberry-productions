@@ -2,53 +2,236 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Strawberry Productions</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #0d1117;
+      color: white;
+      height: 100vh;
+      overflow: hidden;   /* ← stops browser from scrolling */
+    }
+
+    /* ===== SCROLLABLE CONTAINER ===== */
+    .main-scroll {
+      height: 100vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    /* Custom scrollbar */
+    .main-scroll::-webkit-scrollbar {
+      width: 10px;
+    }
+    .main-scroll::-webkit-scrollbar-thumb {
+      background: #ff2e55;
+      border-radius: 20px;
+    }
+    .main-scroll::-webkit-scrollbar-track {
+      background: #161b22;
+    }
+
+    /* ----- LOGO ----- */
+    .logo {
+      text-align: center;
+      padding: 30px 0 20px;
+    }
+
+    .logo img {
+      width: 70vw;               /* desktop: 70% screen width */
+      max-width: 800px;
+      height: auto;
+      display: inline-block;
+    }
+
+    /* ----- SOCIAL ICONS ROW ----- */
+    .social-row {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin: 0 auto 50px;
+      flex-wrap: wrap;
+    }
+
+    .social-row a img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      transition: transform 0.3s, filter 0.3s;
+    }
+
+    .social-row a img:hover {
+      transform: scale(1.15);
+      filter: drop-shadow(0 0 6px #ff2e55);
+    }
+
+    /* ----- ADDON GRID ----- */
+    .addon-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);   /* desktop: 3 cards per row */
+      gap: 25px;
+      padding: 0 5% 50px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .addon-card {
+      background: #161b22;
+      border: 1px solid #2d333b;
+      border-radius: 15px;
+      overflow: hidden;
+      transition: transform 0.3s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .addon-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+    }
+
+    .addon-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .card-content {
+      padding: 15px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-content h3 {
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+
+    .card-content .description {
+      color: #9ca3af;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 15px;
+      flex: 1;
+    }
+
+    .card-content .view-btn {
+      display: block;
+      text-align: center;
+      padding: 10px;
+      background: #ff2e55;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      margin-top: auto;
+    }
+
+    /* ----- RESPONSIVE (Mobile) ----- */
+    @media (max-width: 768px) {
+      .logo img {
+        width: 90vw;            /* mobile: 90% */
+      }
+
+      .social-row {
+        gap: 20px;
+      }
+
+      .social-row a img {
+        width: 50px;
+        height: 50px;
+      }
+
+      .addon-list {
+        grid-template-columns: 1fr;   /* 1 card per row */
+      }
+
+      .addon-card img {
+        height: 180px;
+      }
+    }
+  </style>
 </head>
 <body>
 
-  <!-- LOGO -->
-  <div class="logo">
-    <img src="images/logo.png" alt="Logo">
+  <!-- ========== SCROLLABLE CONTAINER ========== -->
+  <div class="main-scroll">
+
+    <!-- LOGO -->
+    <div class="logo">
+      <img src="images/logo-wide.png" alt="Strawberry Productions">
+    </div>
+
+    <!-- SOCIAL ICONS (Store, YouTube, Discord) -->
+    <div class="social-row">
+      <a href="https://your-store-link" target="_blank">
+        <img src="images/store-icon.png" alt="Store">
+      </a>
+      <a href="https://youtube.com/@yourchannel" target="_blank">
+        <img src="images/youtube-icon.png" alt="YouTube">
+      </a>
+      <a href="https://discord.gg/yourinvite" target="_blank">
+        <img src="images/discord-icon.png" alt="Discord">
+      </a>
+    </div>
+
+    <!-- ADDON LIST -->
+    <div class="addon-list">
+
+      <!-- ADDON CARD 1 -->
+      <div class="addon-card">
+        <img src="images/addon1.png" alt="Genshin X Craft">
+        <div class="card-content">
+          <h3>Genshin X Craft</h3>
+          <p class="description">An epic Genshin Impact themed addon with new weapons, mobs and biomes.</p>
+          <a href="pages/genshin_x_craft.html" class="view-btn">View Addon</a>
+        </div>
+      </div>
+
+      <!-- ADDON CARD 2 -->
+      <div class="addon-card">
+        <img src="images/coldwheels.png" alt="Coldwheels">
+        <div class="card-content">
+          <h3>Coldwheels</h3>
+          <p class="description">Adds drivable Hot Wheels style cars to your Minecraft world.</p>
+          <a href="pages/coldwheels.html" class="view-btn">View Addon</a>
+        </div>
+      </div>
+
+      <!-- ADDON CARD 3 -->
+      <div class="addon-card">
+        <img src="images/starter_house.png" alt="Starter House">
+        <div class="card-content">
+          <h3>Starter House</h3>
+          <p class="description">Spawn in a fully furnished survival house right when you start.</p>
+          <a href="pages/starter_house.html" class="view-btn">View Addon</a>
+        </div>
+      </div>
+
+      <!-- ADDON CARD 4 (example extra) -->
+      <div class="addon-card">
+        <img src="images/addon4.png" alt="New Addon">
+        <div class="card-content">
+          <h3>Another Addon</h3>
+          <p class="description">Short description goes here – just edit this text.</p>
+          <a href="pages/new_addon.html" class="view-btn">View Addon</a>
+        </div>
+      </div>
+
+    </div>
+
   </div>
-
-  <!-- ADDON LIST -->
-  <div class="addon-list">
-
-    <!-- ADDON CARD 1 -->
-    <div class="addon-card">
-      <img src="images/addon1.png" alt="Coldwheels">
-      <a href="pages/genshin_x_craft.html">Genshin X Craft</a>
-    </div>
-
-    <!-- ADDON CARD 2 -->
-    <div class="addon-card">
-      <img src="images/coldwheels.png" alt="Coldwheels">
-      <a href="pages/coldwheels.html">Coldwheels</a>
-    </div>
-     <!-- ADDON CARD 3 -->
-    <div class="addon-card">
-      <img src="images/starter_house.png" alt="Coldwheels">
-      <a href="pages/coldwheels.html">Starter House</a>
-    </div>
-     <!-- ADDON CARD 4 -->
-    <div class="addon-card">
-      <img src="images/coldwheels.png" alt="Coldwheels">
-      <a href="pages/coldwheels.html">Coldwheels</a>
-    </div>
-
-    <!-- COPY THIS BLOCK FOR MORE ADDONS -->
-
-  </div>
+  <!-- ========== END SCROLLABLE CONTAINER ========== -->
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
