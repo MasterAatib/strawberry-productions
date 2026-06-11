@@ -73,12 +73,14 @@
             filter: drop-shadow(0 0 6px #ff2e55);
         }
 
-        /* ----- ADDON GRID (FLUID – FULL WIDTH) ----- */
+        /* ----- ADDON GRID (3 per row desktop, 1 per row mobile) ----- */
         .addon-list {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));  /* ← fills all available width */
+            grid-template-columns: repeat(3, 1fr);   /* ✅ exactly 3 cards */
             gap: 25px;
-            padding: 0 3% 50px;  /* smaller side padding on desktop */
+            padding: 0 5% 50px;
+            max-width: 1400px;       /* keeps it tasteful on ultrawide screens */
+            margin: 0 auto;
         }
 
         .addon-card {
@@ -89,7 +91,7 @@
             transition: transform 0.3s;
             display: flex;
             flex-direction: column;
-            position: relative;   /* for the gradient overlay */
+            position: relative;
         }
 
         .addon-card:hover {
@@ -97,7 +99,7 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.4);
         }
 
-        /* Gradient shine effect (like the Asset Hub store) */
+        /* Gradient shine (store effect) */
         .addon-card::before {
             content: '';
             position: absolute;
@@ -115,7 +117,7 @@
 
         .addon-card img {
             width: 400px;
-            height: auto;        /* taller for more visual impact */
+            height: auto;
             object-fit: cover;
             display: block;
         }
@@ -125,7 +127,7 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            position: relative;   /* above the gradient */
+            position: relative;
             z-index: 2;
         }
 
@@ -159,10 +161,10 @@
             background: #e0294c;
         }
 
-        /* ----- RESPONSIVE (Mobile) ----- */
+        /* ----- MOBILE ----- */
         @media (max-width: 768px) {
             .logo img {
-                width: 90vw;       /* mobile: 90% */
+                width: 90vw;
             }
 
             .social-row {
@@ -175,7 +177,7 @@
             }
 
             .addon-list {
-                grid-template-columns: 1fr;   /* 1 card per row */
+                grid-template-columns: 1fr;   /* ✅ 1 card per row */
                 padding: 0 5% 40px;
             }
 
@@ -187,7 +189,6 @@
 </head>
 <body>
 
-    <!-- ========== SCROLLABLE CONTAINER ========== -->
     <div class="main-scroll">
 
         <!-- LOGO -->
@@ -195,7 +196,7 @@
             <img src="images/logo.png" alt="Strawberry Productions">
         </div>
 
-        <!-- SOCIAL ICONS (Store, YouTube, Discord) -->
+        <!-- SOCIAL ICONS -->
         <div class="social-row">
             <a href="https://your-store-link" target="_blank">
                 <img src="images/store-icon.png" alt="Store">
@@ -208,7 +209,7 @@
             </a>
         </div>
 
-        <!-- ADDON LIST (FLUID GRID) -->
+        <!-- ADDON LIST (3 cards per row) -->
         <div class="addon-list">
 
             <!-- ADDON CARD 1 -->
@@ -241,7 +242,7 @@
                 </div>
             </div>
 
-            <!-- ADDON CARD 4 -->
+            <!-- ADDON CARD 4 (copy for more) -->
             <div class="addon-card">
                 <img src="images/addon4.png" alt="Another Addon">
                 <div class="card-content">
@@ -251,12 +252,9 @@
                 </div>
             </div>
 
-            <!-- Copy the block above to add more cards -->
-
         </div>
 
     </div>
-    <!-- ========== END SCROLLABLE CONTAINER ========== -->
 
 </body>
 </html>
