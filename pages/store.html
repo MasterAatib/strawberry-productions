@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Strawberry Asset Hub</title>
     <style>
         * {
@@ -16,7 +16,7 @@
             background: #0d1117;
             color: white;
             height: 100vh;
-            overflow: hidden;   /* ← prevents browser scroll */
+            overflow: hidden;   /* prevents browser scroll, using internal scroll */
         }
 
         .main-scroll {
@@ -28,7 +28,7 @@
 
         /* custom scrollbar */
         .main-scroll::-webkit-scrollbar {
-            width: 10px;
+            width: 8px;
         }
         .main-scroll::-webkit-scrollbar-thumb {
             background: #ff2e55;
@@ -46,32 +46,45 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
+            gap: 15px;
         }
 
         .logo {
-            font-size: 40px;
+            font-size: 32px;
             font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex-wrap: wrap;
         }
 
         .logo span {
             color: #ff2e55;
-            font-size: 55px;
+            font-size: 36px;
             font-weight: bold;
+        }
+
+        .logo-icon {
+            height: 42px;
+            width: auto;
+            vertical-align: middle;
         }
 
         .search-box {
             display: flex;
-            width: 450px;
+            width: 380px;
             max-width: 100%;
         }
 
         .search-box input {
             flex: 1;
-            padding: 12px;
+            padding: 12px 15px;
             border: none;
             outline: none;
             background: #1f2937;
             color: white;
+            border-radius: 8px 0 0 8px;
+            font-size: 16px;
         }
 
         .search-box button {
@@ -80,160 +93,193 @@
             background: #ff2e55;
             color: white;
             cursor: pointer;
+            font-weight: bold;
+            border-radius: 0 8px 8px 0;
+            transition: background 0.2s;
+        }
+
+        .search-box button:hover {
+            background: #e0294c;
         }
 
         /* NAV */
         nav {
             background: #161b22;
-            padding: 15px 5%;
+            padding: 12px 5%;
             display: flex;
-            gap: 30px;
-            overflow: auto;
+            gap: 25px;
+            overflow-x: auto;
+            white-space: nowrap;
+            scrollbar-width: thin;
         }
 
         nav a {
             text-decoration: none;
             color: white;
             font-weight: bold;
-            white-space: nowrap;
+            padding: 5px 0;
+            border-bottom: 2px solid transparent;
+            transition: 0.2s;
         }
 
         nav a:hover {
             color: #ff2e55;
+            border-bottom-color: #ff2e55;
         }
 
-        /* HERO */
+        /* HERO BANNER */
         .hero-banner {
-            height: 500px;
             margin: 30px 5%;
-            border-radius: 20px;
-            background:
-                linear-gradient(90deg, rgba(0,0,0,.95), rgba(0,0,0,0)),
-                url("../images/hollow_knight.jpg");
+            border-radius: 24px;
+            background: linear-gradient(90deg, rgba(0,0,0,0.9), rgba(0,0,0,0.4)), url("../images/hollow_knight.jpg");
             background-size: cover;
-            background-position: center;
+            background-position: center 30%;
             display: flex;
             align-items: center;
+            min-height: 420px;
+            transition: all 0.3s;
+            animation: floatHero 4s ease-in-out infinite;
+        }
+
+        @keyframes floatHero {
+            50% { transform: translateY(-5px); }
         }
 
         .hero-content {
-            padding: 60px;
-            max-width: 600px;
+            padding: 40px 50px;
+            max-width: 650px;
         }
 
         .hero-content h4 {
             color: #ff2e55;
-            margin-bottom: 10px;
-            letter-spacing: 2px;
+            font-size: 18px;
+            letter-spacing: 3px;
+            margin-bottom: 12px;
         }
 
         .hero-content h1 {
-            font-size: 60px;
-            line-height: 1;
+            font-size: 52px;
+            line-height: 1.2;
             margin-bottom: 20px;
         }
 
         .hero-content p {
-            font-size: 20px;
-            margin-bottom: 25px;
-            color: #ddd;
+            font-size: 18px;
+            margin-bottom: 28px;
+            color: #e5e7eb;
+            line-height: 1.4;
         }
 
         .hero-btn {
             display: inline-block;
-            padding: 15px 30px;
+            padding: 14px 32px;
             background: #ff2e55;
             color: white;
             text-decoration: none;
-            border-radius: 10px;
+            border-radius: 40px;
             font-weight: bold;
+            transition: background 0.2s, transform 0.1s;
         }
 
-        /* FILTERS */
+        .hero-btn:hover {
+            background: #e0294c;
+            transform: scale(1.02);
+        }
+
+        /* FILTER BAR */
         .filter-bar {
-            padding: 10px 5% 30px;
+            padding: 10px 5% 20px;
             display: flex;
-            gap: 10px;
+            gap: 12px;
             flex-wrap: wrap;
         }
 
         .filter-btn {
-            padding: 10px 15px;
+            padding: 8px 18px;
             background: #161b22;
             border: 1px solid #2d333b;
             color: white;
-            border-radius: 8px;
+            border-radius: 40px;
             cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
         }
 
         .filter-btn:hover {
             background: #ff2e55;
+            border-color: #ff2e55;
         }
 
-        /* TITLE */
+        /* SECTION TITLE */
         .section-title {
             padding: 0 5% 20px;
             font-size: 32px;
             font-weight: bold;
-        }
-        .icon {
-            display: flex;          /* ← makes icon and text sit side‑by‑side */
-            align-items: center;    /* ← vertically centres them */
-            gap: 2px;              /* ← space between icon and title */
+            letter-spacing: -0.5px;
         }
 
-        .logo-icon {
-            height: 46px;           /* adjust as needed */
-            width: auto;
-        }
-        /* PRODUCTS */
+        /* PRODUCT GRID */
         .products {
             padding: 0 5% 50px;
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
+            gap: 28px;
         }
 
         .card {
             background: #161b22;
             border: 1px solid #2d333b;
-            border-radius: 15px;
+            border-radius: 18px;
             overflow: hidden;
-            transition: .3s;
+            transition: transform 0.25s ease, box-shadow 0.2s;
+            position: relative;
+            display: flex;
+            flex-direction: column;
         }
 
         .card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-6px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+            border-color: #ff2e5540;
         }
 
         .preview {
             width: 100%;
             height: 220px;
             object-fit: cover;
+            background: #0a0f16;
+            transition: 0.2s;
         }
 
         .card-content {
-            padding: 15px;
+            padding: 18px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         .category {
             color: #9ca3af;
             font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .asset-name {
             font-size: 22px;
             font-weight: bold;
-            margin: 10px 0;
+            margin: 10px 0 8px;
         }
 
         .tag {
             display: inline-block;
-            padding: 5px 10px;
+            padding: 4px 12px;
             background: #ff2e55;
-            border-radius: 20px;
+            border-radius: 30px;
             font-size: 12px;
-            margin-bottom: 15px;
+            font-weight: bold;
+            width: fit-content;
+            margin-bottom: 16px;
         }
 
         .visit-btn {
@@ -243,92 +289,214 @@
             background: #ff2e55;
             text-decoration: none;
             color: white;
-            border-radius: 8px;
+            border-radius: 12px;
             font-weight: bold;
+            transition: background 0.2s;
+            margin-top: auto;
+        }
+
+        .visit-btn:hover {
+            background: #c82345;
         }
 
         /* FOOTER */
         footer {
             background: #111827;
-            padding: 25px;
+            padding: 28px 20px;
             text-align: center;
-            color: #aaa;
+            color: #9ca3af;
+            font-size: 14px;
         }
 
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px) scale(.98);
-            transition: all .7s ease;
-        }
-
-        .show {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-
-        .card {
-            position: relative;
-        }
-
+        /* hover glow effect */
         .card::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, transparent, rgba(255,46,85,.12));
+            background: linear-gradient(135deg, transparent, rgba(255,46,85,0.08));
             opacity: 0;
-            transition: .3s;
+            transition: 0.3s;
             pointer-events: none;
+            border-radius: 18px;
         }
 
         .card:hover::before {
             opacity: 1;
         }
 
-        .hero-banner {
-            animation: floatHero 4s ease-in-out infinite;
-        }
+        /* ========== MOBILE OPTIMIZATION (max-width: 768px) ========== */
+        @media (max-width: 768px) {
+            body {
+                overflow: auto;
+            }
+            .main-scroll {
+                height: auto;
+                overflow-y: visible;
+            }
 
-        @keyframes floatHero {
-            50% { transform: translateY(-8px); }
-        }
+            header {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+                padding: 16px 5%;
+                gap: 12px;
+            }
 
-        /* MOBILE */
-        @media(max-width:768px) {
+            .logo {
+                justify-content: center;
+                font-size: 28px;
+            }
+
+            .logo span {
+                font-size: 30px;
+            }
+
+            .logo-icon {
+                height: 36px;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .search-box input {
+                padding: 14px 16px;
+                font-size: 16px;
+            }
+
+            .search-box button {
+                padding: 14px 20px;
+            }
+
+            nav {
+                gap: 20px;
+                padding: 12px 5%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            nav a {
+                font-size: 15px;
+            }
+
             .hero-banner {
-                height: 20%;
+                margin: 20px 4%;
+                min-height: 280px;
+                border-radius: 20px;
+                animation: none; /* smoother on mobile, no float */
+                background-position: center 40%;
             }
-            .hero-content h1 {
-                font-size: 20%;
-            }
-            .hero-content h4 {
-                font-size: 20%;
-                margin-bottom: 20%;
-            }
+
             .hero-content {
-                padding: 20%;
+                padding: 30px 24px;
+                max-width: 100%;
             }
+
+            .hero-content h4 {
+                font-size: 14px;
+                letter-spacing: 2px;
+                margin-bottom: 8px;
+            }
+
+            .hero-content h1 {
+                font-size: 32px;
+                line-height: 1.25;
+                margin-bottom: 12px;
+            }
+
+            .hero-content p {
+                font-size: 16px;
+                margin-bottom: 22px;
+            }
+
             .hero-btn {
+                padding: 12px 28px;
+                font-size: 15px;
                 display: inline-block;
-                padding: 20% 20%;
+            }
+
+            .filter-bar {
+                padding: 5px 4% 20px;
+                gap: 10px;
+                justify-content: center;
+            }
+
+            .filter-btn {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+
+            .section-title {
+                font-size: 26px;
+                padding: 0 4% 12px;
+            }
+
+            .products {
+                padding: 0 4% 40px;
+                gap: 20px;
+                grid-template-columns: 1fr;  /* single column on mobile */
+            }
+
+            .preview {
+                height: 200px;
+            }
+
+            .asset-name {
+                font-size: 20px;
+            }
+
+            .card-content {
+                padding: 16px;
+            }
+
+            .tag {
+                font-size: 11px;
+                padding: 4px 10px;
+            }
+
+            .visit-btn {
+                padding: 12px;
+                font-size: 15px;
+            }
+
+            footer {
+                padding: 20px 16px;
+                font-size: 13px;
+            }
+        }
+
+        /* small devices (below 480px) */
+        @media (max-width: 480px) {
+            .hero-content h1 {
+                font-size: 28px;
             }
             .hero-content p {
-                font-size: 20%;
-                margin-bottom: 20%;
+                font-size: 14px;
             }
-            .logo-icon {
-                height: 25px;
+            .hero-btn {
+                padding: 10px 22px;
+            }
+            .filter-btn {
+                padding: 6px 14px;
+                font-size: 13px;
+            }
+            .section-title {
+                font-size: 24px;
+            }
+            .preview {
+                height: 180px;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- ========== SCROLLABLE CONTAINER ========== -->
+    <!-- SCROLLABLE CONTAINER (keeps custom scrollbar) -->
     <div class="main-scroll">
 
         <header>
             <div class="logo">
-                <img src="../images/strawberryicon.png" alt="icon" class="logo-icon">
+                <img src="../images/strawberryicon.png" alt="icon" class="logo-icon" onerror="this.src='https://placehold.co/40x40?text=🍓'">
                 <span>Straw</span>berry Asset<span>Hub</span>
             </div>
             <div class="search-box">
@@ -342,6 +510,7 @@
             <a href="#">2D Animation</a>
             <a href="#">Weapons</a>
             <a href="#">2D Background</a>
+            <a href="#">Icons</a>
         </nav>
 
         <section class="hero-banner">
@@ -361,38 +530,27 @@
             <button class="filter-btn" onclick="filterAssets('Icons')">Icon's</button>
         </div>
 
-        <div class="section-title">Latest Assets</div>
+        <div class="section-title">✨ Latest Assets</div>
 
         <div class="products" id="productContainer"></div>
 
-        <footer>© 2026 AssetHub</footer>
+        <footer>© 2026 Strawberry Asset Hub — All creative resources</footer>
 
     </div>
-    <!-- ========== END SCROLLABLE CONTAINER ========== -->
 
     <script>
         /*
         =========================================
-        ADD NEW ASSETS HERE
+        ASSET DATABASE — Easily extendable
         =========================================
-        Example:
-        {
-            name:"Zombie Pack",
-            category:"2D Animation",
-            thumbnail:"images/zombie.jpg",
-            gif:"images/zombie.gif",
-            tag:"New",
-            link:"https://your-superprofile-link"
-        }
         */
-
         const assets = [
             {
                 name: "Warrior Animation Pack",
                 category: "2D Animation",
                 thumbnail: "images/coldwheels.png",
                 gif: "images/animation1.gif",
-                tag: "Popular",
+                tag: "🔥 Popular",
                 link: "https://your-superprofile-link"
             },
             {
@@ -400,23 +558,39 @@
                 category: "Weapons",
                 thumbnail: "images/weapon1.jpg",
                 gif: "images/weapon1.gif",
-                tag: "Premium",
+                tag: "✨ Premium",
                 link: "https://your-superprofile-link"
             },
             {
-                name: "Forest Background",
+                name: "Enchanted Forest Background",
                 category: "2D Background",
                 thumbnail: "images/background1.jpg",
                 gif: "images/background1.gif",
-                tag: "New",
+                tag: "🆕 New",
                 link: "https://your-superprofile-link"
             },
             {
-                name: "Castle Background",
+                name: "Castle Ruins (Icon Set)",
                 category: "Icons",
                 thumbnail: "images/background2.jpg",
                 gif: "images/background2.gif",
-                tag: "Free",
+                tag: "🎁 Free",
+                link: "https://your-superprofile-link"
+            },
+            {
+                name: "Dragon Slayer Animations",
+                category: "2D Animation",
+                thumbnail: "images/dragon_anim.jpg",
+                gif: "images/dragon.gif",
+                tag: "🏆 Top Rated",
+                link: "https://your-superprofile-link"
+            },
+            {
+                name: "Mythic Blades Pack",
+                category: "Weapons",
+                thumbnail: "images/mythic_blades.jpg",
+                gif: "images/blades.gif",
+                tag: "⚡ Limited",
                 link: "https://your-superprofile-link"
             }
         ];
@@ -424,45 +598,60 @@
         const container = document.getElementById("productContainer");
 
         function renderAssets(list) {
+            if (!container) return;
             container.innerHTML = "";
+            if (list.length === 0) {
+                container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:#aaa;">No assets found 🍓</div>`;
+                return;
+            }
             list.forEach(asset => {
                 const card = document.createElement("div");
                 card.className = "card";
+                // fallback image if not exists
+                const thumbSrc = asset.thumbnail;
+                const gifSrc = asset.gif;
                 card.innerHTML = `
-                    <img class="preview" src="${asset.thumbnail}" data-static="${asset.thumbnail}" data-gif="${asset.gif}">
+                    <img class="preview" src="${thumbSrc}" data-static="${thumbSrc}" data-gif="${gifSrc}" loading="lazy" onerror="this.src='https://placehold.co/400x220/1f2937/ff2e55?text=Strawberry'">
                     <div class="card-content">
-                        <div class="category">${asset.category}</div>
+                        <div class="category">📁 ${asset.category}</div>
                         <div class="asset-name">${asset.name}</div>
                         <div class="tag">${asset.tag}</div>
-                        <a href="${asset.link}" target="_blank" class="visit-btn">View Asset</a>
+                        <a href="${asset.link}" target="_blank" class="visit-btn">🔍 View Asset</a>
                     </div>
                 `;
                 container.appendChild(card);
 
                 const img = card.querySelector(".preview");
 
-                /* DESKTOP */
-                img.addEventListener("mouseenter", () => {
-                    img.src = img.dataset.gif;
-                });
-                img.addEventListener("mouseleave", () => {
-                    img.src = img.dataset.static;
-                });
-
-                /* MOBILE */
-                let pressTimer;
-                img.addEventListener("touchstart", () => {
-                    pressTimer = setTimeout(() => {
+                // Desktop hover effect (gif preview)
+                if (img.dataset.gif && img.dataset.gif !== "") {
+                    img.addEventListener("mouseenter", () => {
                         img.src = img.dataset.gif;
-                    }, 500);
-                });
-                img.addEventListener("touchend", () => {
-                    clearTimeout(pressTimer);
-                    img.src = img.dataset.static;
-                });
+                    });
+                    img.addEventListener("mouseleave", () => {
+                        img.src = img.dataset.static;
+                    });
+
+                    // Mobile: long press to show gif (500ms)
+                    let pressTimer;
+                    img.addEventListener("touchstart", (e) => {
+                        pressTimer = setTimeout(() => {
+                            img.src = img.dataset.gif;
+                        }, 500);
+                    });
+                    img.addEventListener("touchend", () => {
+                        clearTimeout(pressTimer);
+                        img.src = img.dataset.static;
+                    });
+                    img.addEventListener("touchcancel", () => {
+                        clearTimeout(pressTimer);
+                        img.src = img.dataset.static;
+                    });
+                }
             });
         }
 
+        // initial render
         renderAssets(assets);
 
         function filterAssets(category) {
@@ -475,10 +664,31 @@
         }
 
         function searchAssets() {
-            const keyword = document.getElementById("searchInput").value.toLowerCase();
-            const filtered = assets.filter(asset => asset.name.toLowerCase().includes(keyword));
+            const keyword = document.getElementById("searchInput").value.toLowerCase().trim();
+            if (keyword === "") {
+                renderAssets(assets);
+                return;
+            }
+            const filtered = assets.filter(asset => asset.name.toLowerCase().includes(keyword) || asset.category.toLowerCase().includes(keyword));
             renderAssets(filtered);
         }
+
+        // optional: allow Enter key on search input
+        document.getElementById("searchInput")?.addEventListener("keypress", function(e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                searchAssets();
+            }
+        });
+
+        // fix for any missing images globally (graceful fallback)
+        document.querySelectorAll('.preview').forEach(img => {
+            img.addEventListener('error', function() {
+                if (!this.src.includes('placehold.co')) {
+                    this.src = 'https://placehold.co/400x220/1f2937/ff2e55?text=🍓+Asset';
+                }
+            });
+        });
     </script>
 </body>
 </html>
