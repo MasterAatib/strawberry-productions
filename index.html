@@ -64,8 +64,12 @@
         .social-row a img {
             width: 300px;
             height: auto;
+            display: block;
             object-fit: contain;
             transition: transform 0.3s, filter 0.3s;
+        }
+        .social-row a{
+            display:block;
         }
 
         .social-row a img:hover {
@@ -162,29 +166,59 @@
         }
 
         /* ----- MOBILE ----- */
-        @media (max-width: 768px) {
-            .logo img {
-                width: 90vw;
-            }
-
-            .social-row {
-                gap: 20px;
-            }
-
-            .social-row a img {
-                width: 25%;
-                height: auto;
-            }
-
-            .addon-list {
-                grid-template-columns: 1fr;   /* ✅ 1 card per row */
-                padding: 0 5% 40px;
-            }
-
-            .addon-card img {
-                height: 200px;
-            }
+        /* ----- MOBILE ----- */
+    @media (max-width: 768px) {
+    
+        .logo img {
+            width: 90vw;
         }
+    
+        .social-row{
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            gap:10px;
+            padding:0 12px;
+            margin-bottom:30px;
+        }
+    
+        .social-row a{
+            flex:1;
+            min-width:0;
+        }
+    
+        .social-row a img{
+            width:100%;
+            display:block;
+            border-radius:12px;
+            transition:0.3s;
+        }
+        .social-row{
+            display:grid;
+            grid-template-columns:repeat(3,1fr);
+            gap:10px;
+            padding:0 15px;
+        }
+        
+        .social-row a img{
+            width:100%;
+            border-radius:12px;
+            display:block;
+        }
+    
+        .social-row a img:hover{
+            transform:none;
+        }
+    
+        .addon-list{
+            grid-template-columns:1fr;
+            padding:0 5% 40px;
+        }
+    
+        .addon-card img{
+            height:auto;
+        }
+    }
     </style>
 </head>
 <body>
