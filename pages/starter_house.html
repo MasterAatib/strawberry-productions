@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Starter House | Minecraft Map</title>
+
+  <!-- Google Fonts (Minecraft-style + body) -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #111827;
+      --accent: #38bdf8;
+      --text: #e5e7eb;
+      --muted: #ececec;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(180deg, #020617, var(--bg));
+      color: var(--text);
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ===== INNER SCROLLABLE CONTAINER ===== */
+    .main-scroll {
+      height: 100vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    /* Blue custom scrollbar */
+    .main-scroll::-webkit-scrollbar {
+      width: 10px;
+    }
+    .main-scroll::-webkit-scrollbar-thumb {
+      background: var(--accent);
+      border-radius: 20px;
+    }
+    .main-scroll::-webkit-scrollbar-track {
+      background: #0b2b42;
+    }
+
+    header {
+      background: url("https://raw.githubusercontent.com/MasterAatib/strawberry-productions/refs/heads/main/images/starter_house_background.png") center/cover;
+      padding: 80px 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    header::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(2,6,23,0.1);
+    }
+
+    header > div {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    header h1 {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 2.5rem;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      line-height: 1.4;
+    }
+
+    header p {
+      font-size: 1rem;
+      color: var(--muted);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 25px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    .card h2 {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 1.3rem;
+      letter-spacing: 1px;
+      margin-top: 0;
+      border-bottom: 1px solid #1f2933;
+      padding-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .features ul {
+      padding-left: 20px;
+    }
+
+    .features li {
+      margin-bottom: 8px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .info-box {
+      background: #020617;
+      border-radius: 12px;
+      padding: 15px;
+      border: 1px solid #1f2933;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+  
+    /* GALLERY – now each image is a download link */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .gallery a {
+      display: block;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #1f2933;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .gallery a img {
+      width: 100%;
+      display: block;
+      transition: transform 0.25s ease;
+    }
+
+    .gallery a:hover {
+      transform: scale(1.03);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+
+    /* “Add more” hint */
+    .add-more-hint {
+      background: #020617;
+      border: 1px dashed #38bdf8;
+      border-radius: 12px;
+      padding: 15px;
+      margin-top: 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .add-more-hint code {
+      background: #1f2933;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #38bdf8;
+      font-family: monospace;
+    }
+
+    /* Responsive header */
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== SCROLL CONTAINER ========== -->
+  <div class="main-scroll">
+
+    <header>
+      <div>
+        <h1>Starter House</h1>
+        <p>Spawn in a fully equipped home from the very first second</p>
+      </div>
+    </header>
+
+    <main class="container">
+
+      <!-- Screenshots as download links -->
+      <section class="card">
+        <h2>Screenshots</h2>
+        <p>Click any image to download the Starter House map instantly:</p>
+        <div class="gallery">
+          <!-- ADD MORE SCREENSHOTS BY COPYING THE <a> BLOCK BELOW -->
+          <a href="https://your-download-link-starter-house" target="_blank" download>
+            <img src="../images/starterhouse1.png" alt="Starter House View 1">
+          </a>
+          <a href="https://your-download-link-starter-house" target="_blank" download>
+            <img src="../images/starterhouse2.png" alt="Starter House View 2">
+          </a>
+          <a href="https://your-download-link-starter-house" target="_blank" download>
+            <img src="../images/starterhouse3.png" alt="Starter House View 3">
+          </a>
+          <a href="https://your-download-link-starter-house" target="_blank" download>
+            <img src="../images/starterhouse4.png" alt="Starter House View 4">
+          </a>
+          <a href="https://your-download-link-starter-house" target="_blank" download>
+            <img src="../images/starterhouse5.png" alt="Starter House View 5">
+          </a>
+          <a href="https://your-download-link-starter-house" target="_blank" download>
+            <img src="../images/starterhouse6.png" alt="Starter House View 6">
+          </a>
+        </div>
+
+        <!-- How to add more screenshots
+        <div class="add-more-hint">
+          ✨ <strong>Want more screenshots?</strong> Just copy and paste this block inside the <code>gallery</code> div:
+          <br><br>
+          <code>&lt;a href="your-link" target="_blank" download&gt;&lt;img src="images/new-shot.png" alt="New Shot"&gt;&lt;/a&gt;</code>
+        </div>-->
+      </section>
+
+      <!-- Description -->
+      <section class="card">
+        <h2>Description</h2>
+        <p>
+          <strong>Starter House</strong> gives you a ready‑to‑use survival base right when you spawn. 
+          No more punching trees for your first night — just walk in, claim your bed, and start exploring.
+        </p>
+        <p>
+          The house includes everything a beginner needs: a full set of basic tools, a furnace, a crafting table, 
+          storage chests with essential resources, a small farm, and even a hidden treasure room. 
+          Perfect for new players or anyone who wants to skip the early grind.
+        </p>
+      </section>
+
+      <!-- Features -->
+      <section class="card features">
+        <h2>Features</h2>
+        <ul>
+          <li>Pre‑built wooden house with multiple rooms</li>
+          <li>Starter chest with iron tools, torches, food, and wool</li>
+          <li>Functional furnace, crafting table, and anvil</li>
+          <li>Small wheat, carrot, and potato farm included</li>
+          <li>Hidden basement with extra loot</li>
+          <li>Works in any Minecraft Bedrock world</li>
+          <li>Instant survival mode ready</li>
+        </ul>
+      </section>
+
+      <!-- Map Info -->
+      <section class="card">
+        <h2>Map Info</h2>
+        <div class="info-grid">
+          <div class="info-box"><strong>Game Version:</strong><br> Minecraft Bedrock</div>
+          <div class="info-box"><strong>Category:</strong><br> Maps / Survival</div>
+          <div class="info-box"><strong>Creator:</strong><br> Your Name</div>
+          <div class="info-box"><strong>Status:</strong><br> Completed</div>
+        </div>
+      </section>
+
+      <!-- Back button (no download button here) -->
+      <section class="card" style="text-align:center;">
+        <p>All screenshots above are direct download links.</p>
+        <a href="../index.html" style="display:inline-block; margin-top:10px; padding:10px 20px; background:#38bdf8; color:#020617; border-radius:30px; text-decoration:none; font-weight:600;">⬅ Back to Home</a>
+      </section>
+    </main>
+
+    <footer>
+      <p>Not affiliated with Mojang. Fan-made project.</p>
+    </footer>
+
+  </div>
+  <!-- ========== END SCROLL CONTAINER ========== -->
+
+</body>
+</html>
