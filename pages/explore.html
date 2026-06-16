@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Explore All · Strawberry Asset Hub</title>
+    <style>
+        /* ─── RESET & BASE ─── */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #0d1117;
+            color: white;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .main-scroll {
+            height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .main-scroll::-webkit-scrollbar {
+            width: 8px;
+        }
+        .main-scroll::-webkit-scrollbar-thumb {
+            background: #ff2e55;
+            border-radius: 20px;
+        }
+        .main-scroll::-webkit-scrollbar-track {
+            background: #161b22;
+        }
+
+        /* ─── HEADER ─── */
+        header {
+            background: #111827;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+        .logo span {
+            color: #ff2e55;
+            font-size: 36px;
+            font-weight: bold;
+        }
+        .logo-icon {
+            height: 42px;
+            width: auto;
+            vertical-align: middle;
+        }
+
+        .search-box {
+            display: flex;
+            width: 380px;
+            max-width: 100%;
+        }
+        .search-box input {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            outline: none;
+            background: #1f2937;
+            color: white;
+            border-radius: 8px 0 0 8px;
+            font-size: 16px;
+        }
+        .search-box button {
+            padding: 12px 20px;
+            border: none;
+            background: #ff2e55;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 0 8px 8px 0;
+            transition: background 0.2s;
+        }
+        .search-box button:hover {
+            background: #e0294c;
+        }
+
+        /* ─── NAV ─── */
+        nav {
+            background: #161b22;
+            padding: 12px 5%;
+            display: flex;
+            gap: 25px;
+            overflow-x: auto;
+            white-space: nowrap;
+            scrollbar-width: thin;
+        }
+        nav a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            padding: 5px 0;
+            border-bottom: 2px solid transparent;
+            transition: 0.2s;
+        }
+        nav a:hover {
+            color: #ff2e55;
+            border-bottom-color: #ff2e55;
+        }
+        nav a.active {
+            color: #ff2e55;
+            border-bottom-color: #ff2e55;
+        }
+
+        /* ─── FILTER + SORT BAR ─── */
+        .control-bar {
+            padding: 20px 5% 10px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 14px 20px;
+            border-bottom: 1px solid #222a33;
+            margin-bottom: 10px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            flex: 1 1 auto;
+        }
+
+        .filter-btn {
+            padding: 8px 18px;
+            background: #161b22;
+            border: 1px solid #2d333b;
+            color: #b0b8c4;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+        .filter-btn:hover {
+            background: #ff2e55;
+            border-color: #ff2e55;
+            color: #fff;
+        }
+        .filter-btn.active {
+            background: #ff2e55;
+            border-color: #ff2e55;
+            color: #fff;
+        }
+
+        .sort-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-left: auto;
+        }
+        .sort-group label {
+            color: #9ca3af;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .sort-group select {
+            padding: 8px 14px;
+            background: #161b22;
+            border: 1px solid #2d333b;
+            color: white;
+            border-radius: 30px;
+            font-size: 14px;
+            cursor: pointer;
+            outline: none;
+        }
+        .sort-group select:hover {
+            border-color: #ff2e55;
+        }
+
+        .asset-count {
+            color: #9ca3af;
+            font-size: 14px;
+            padding: 4px 0;
+            white-space: nowrap;
+        }
+
+        /* ─── SECTION TITLE ─── */
+        .section-title {
+            padding: 10px 5% 16px;
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .section-title small {
+            font-size: 16px;
+            font-weight: 400;
+            color: #9ca3af;
+            letter-spacing: 0;
+        }
+
+        /* ─── PRODUCT GRID ─── */
+        .products {
+            padding: 0 5% 50px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 28px;
+        }
+
+        .card {
+            background: #161b22;
+            border: 1px solid #2d333b;
+            border-radius: 18px;
+            overflow: hidden;
+            transition: transform 0.25s ease, box-shadow 0.2s, border-color 0.2s;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+            border-color: #ff2e5540;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent, rgba(255, 46, 85, 0.06));
+            opacity: 0;
+            transition: 0.3s;
+            pointer-events: none;
+            border-radius: 18px;
+        }
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .preview {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: #0a0f16;
+            transition: 0.2s;
+        }
+
+        .card-content {
+            padding: 18px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .category {
+            color: #9ca3af;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .price-badge {
+            font-size: 12px;
+            font-weight: 700;
+            padding: 3px 12px;
+            border-radius: 30px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+        .price-badge.free {
+            background: #0d7a3e;
+            color: #8bffb0;
+        }
+        .price-badge.paid {
+            background: #7a2e3a;
+            color: #ff8a9a;
+        }
+
+        .asset-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 6px 0 8px;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 3px 12px;
+            background: #ff2e55;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: bold;
+            width: fit-content;
+            margin-bottom: 14px;
+        }
+
+        .card-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: auto;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 14px;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.1s;
+            border: none;
+            cursor: pointer;
+            flex: 1 1 auto;
+            min-width: 80px;
+            text-align: center;
+        }
+        .btn:hover {
+            transform: scale(1.02);
+        }
+
+        .btn-view {
+            background: #ff2e55;
+            color: #fff;
+        }
+        .btn-view:hover {
+            background: #c82345;
+        }
+
+        .btn-buy-inr {
+            background: #1f8b4c;
+            color: #fff;
+        }
+        .btn-buy-inr:hover {
+            background: #16733e;
+        }
+
+        .btn-buy-usd {
+            background: #2563eb;
+            color: #fff;
+        }
+        .btn-buy-usd:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-buy-inr.paid,
+        .btn-buy-usd.paid {
+            flex: 1 1 40%;
+        }
+
+        /* ─── EMPTY STATE ─── */
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            color: #9ca3af;
+        }
+        .empty-state .emoji {
+            font-size: 56px;
+            display: block;
+            margin-bottom: 16px;
+        }
+        .empty-state h3 {
+            font-size: 22px;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+
+        /* ─── FOOTER ─── */
+        footer {
+            background: #111827;
+            padding: 28px 20px;
+            text-align: center;
+            color: #9ca3af;
+            font-size: 14px;
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 768px) {
+            body {
+                overflow: auto;
+            }
+            .main-scroll {
+                height: auto;
+                overflow-y: visible;
+            }
+
+            header {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+                padding: 16px 5%;
+                gap: 12px;
+            }
+            .logo {
+                justify-content: center;
+                font-size: 28px;
+            }
+            .logo span {
+                font-size: 30px;
+            }
+            .logo-icon {
+                height: 36px;
+            }
+            .search-box {
+                width: 100%;
+            }
+            .search-box input {
+                padding: 14px 16px;
+                font-size: 16px;
+            }
+            .search-box button {
+                padding: 14px 20px;
+            }
+
+            nav {
+                gap: 20px;
+                padding: 12px 5%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            nav a {
+                font-size: 15px;
+            }
+
+            .control-bar {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+                padding: 16px 4% 10px;
+            }
+            .filter-group {
+                justify-content: center;
+            }
+            .sort-group {
+                margin-left: 0;
+                justify-content: center;
+            }
+            .asset-count {
+                text-align: center;
+            }
+
+            .section-title {
+                font-size: 24px;
+                padding: 8px 4% 12px;
+                flex-wrap: wrap;
+            }
+            .section-title small {
+                font-size: 14px;
+            }
+
+            .products {
+                padding: 0 4% 40px;
+                gap: 20px;
+                grid-template-columns: 1fr;
+            }
+            .preview {
+                height: 180px;
+            }
+            .asset-name {
+                font-size: 19px;
+            }
+            .card-content {
+                padding: 16px;
+            }
+            .card-actions {
+                flex-wrap: wrap;
+            }
+            .btn {
+                font-size: 13px;
+                padding: 10px 14px;
+                flex: 1 1 100%;
+            }
+            .btn-buy-inr.paid,
+            .btn-buy-usd.paid {
+                flex: 1 1 45%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .filter-btn {
+                padding: 6px 14px;
+                font-size: 13px;
+            }
+            .sort-group select {
+                padding: 6px 12px;
+                font-size: 13px;
+            }
+            .section-title {
+                font-size: 22px;
+            }
+            .preview {
+                height: 160px;
+            }
+            .asset-name {
+                font-size: 17px;
+            }
+            .btn {
+                font-size: 12px;
+                padding: 9px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-scroll">
+
+        <!-- HEADER -->
+        <header>
+            <div class="logo">
+                <img src="../images/store/strawberryicon.png" alt="icon" class="logo-icon" onerror="this.src='https://placehold.co/40x40?text=🍓'" />
+                <span>Straw</span>berry Asset<span>Hub</span>
+            </div>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search assets..." />
+                <button onclick="searchAssets()">Search</button>
+            </div>
+        </header>
+
+        <!-- NAV -->
+        <nav>
+            <a href="../index.html">Home</a>
+            <a href="explore.html" class="active">Explore All</a>
+            <a href="https://www.pixelcut.ai/background-remover">BG Remove</a>
+            <a href="https://picsart.com/image-upscale/">Upscale</a>
+            <a href="https://gemini.google.com/app">AI Artist</a>
+            <a href="https://web.blockbench.net/">3D & 2D</a>
+        </nav>
+
+        <!-- CONTROL BAR -->
+        <div class="control-bar">
+            <div class="filter-group" id="filterGroup">
+                <button class="filter-btn active" data-filter="All">🏷️ All</button>
+                <button class="filter-btn" data-filter="2D Animation">🎞️ 2D Animation</button>
+                <button class="filter-btn" data-filter="Weapons">⚔️ Weapons</button>
+                <button class="filter-btn" data-filter="2D Background">🌄 2D Background</button>
+                <button class="filter-btn" data-filter="Icons">🖼️ Icons</button>
+                <button class="filter-btn" data-filter="3D Models">🧊 3D Models</button>
+                <button class="filter-btn" data-filter="Sound Effects">🔊 Sound Effects</button>
+                <button class="filter-btn" data-filter="UI Kits">🎨 UI Kits</button>
+            </div>
+
+            <div class="sort-group">
+                <label for="sortSelect">Sort:</label>
+                <select id="sortSelect">
+                    <option value="default">✨ Default</option>
+                    <option value="name-asc">A → Z</option>
+                    <option value="name-desc">Z → A</option>
+                    <option value="price-asc">💰 Price: Low → High</option>
+                    <option value="price-desc">💰 Price: High → Low</option>
+                </select>
+                <span class="asset-count" id="assetCount">0 assets</span>
+            </div>
+        </div>
+
+        <!-- SECTION TITLE -->
+        <div class="section-title">
+            🍓 Explore All Assets
+            <small>— game-ready resources for every project</small>
+        </div>
+
+        <!-- PRODUCT GRID -->
+        <div class="products" id="productContainer"></div>
+
+        <!-- FOOTER -->
+        <footer>© 2026 Strawberry Asset Hub — All creative resources</footer>
+
+    </div>
+
+    <script>
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  ASSET DATABASE
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+        const assets = [{
+            id: 1,
+            name: "Warrior Animation Pack",
+            category: "2D Animation",
+            thumbnail: "../images/coldwheels.png",
+            type: "free",
+            priceUSD: 0,
+            priceINR: 0,
+            link: "https://your-superprofile-link",
+            tag: "🔥 Popular"
+        }, {
+            id: 2,
+            name: "Fantasy Weapon Set",
+            category: "Weapons",
+            thumbnail: "../images/genshin_x_craft.png",
+            type: "paid",
+            priceUSD: 12.99,
+            priceINR: 499,
+            link: "https://your-superprofile-link",
+            tag: "✨ Premium"
+        }, {
+            id: 3,
+            name: "Enchanted Forest Background",
+            category: "2D Background",
+            thumbnail: "../images/top.png",
+            type: "paid",
+            priceUSD: 8.50,
+            priceINR: 349,
+            link: "https://your-superprofile-link",
+            tag: "🆕 New"
+        }, {
+            id: 4,
+            name: "Castle Ruins Icon Set",
+            category: "Icons",
+            thumbnail: "../images/discord_banner.png",
+            type: "free",
+            priceUSD: 0,
+            priceINR: 0,
+            link: "https://your-superprofile-link",
+            tag: "🎁 Free"
+        }, {
+            id: 5,
+            name: "Dragon Slayer Animations",
+            category: "2D Animation",
+            thumbnail: "../images/youtube_banner.png",
+            type: "paid",
+            priceUSD: 18.99,
+            priceINR: 749,
+            link: "https://your-superprofile-link",
+            tag: "🏆 Top Rated"
+        }, {
+            id: 6,
+            name: "Mythic Blades Pack",
+            category: "Weapons",
+            thumbnail: "../images/hollow_knight.png",
+            type: "paid",
+            priceUSD: 9.99,
+            priceINR: 399,
+            link: "https://your-superprofile-link",
+            tag: "⚡ Limited"
+        }, {
+            id: 7,
+            name: "Pixel Dungeon Tileset",
+            category: "2D Background",
+            thumbnail: "../images/store/hollow_knight.jpg",
+            type: "free",
+            priceUSD: 0,
+            priceINR: 0,
+            link: "https://your-superprofile-link",
+            tag: "🌱 Community"
+        }, {
+            id: 8,
+            name: "Cyberpunk UI Kit",
+            category: "UI Kits",
+            thumbnail: "../images/store/hollow_knight.jpg",
+            type: "paid",
+            priceUSD: 14.50,
+            priceINR: 599,
+            link: "https://your-superprofile-link",
+            tag: "💎 Pro"
+        }, {
+            id: 9,
+            name: "Retro Arcade SFX",
+            category: "Sound Effects",
+            thumbnail: "../images/store/hollow_knight.jpg",
+            type: "free",
+            priceUSD: 0,
+            priceINR: 0,
+            link: "https://your-superprofile-link",
+            tag: "🎵 Free"
+        }, {
+            id: 10,
+            name: "Low Poly Character Pack",
+            category: "3D Models",
+            thumbnail: "../images/store/hollow_knight.jpg",
+            type: "paid",
+            priceUSD: 22.99,
+            priceINR: 899,
+            link: "https://your-superprofile-link",
+            tag: "🧊 New"
+        }, {
+            id: 11,
+            name: "Magic Spell Icons",
+            category: "Icons",
+            thumbnail: "../images/store/hollow_knight.jpg",
+            type: "free",
+            priceUSD: 0,
+            priceINR: 0,
+            link: "https://your-superprofile-link",
+            tag: "✨ Free"
+        }, {
+            id: 12,
+            name: "Steampunk Environment",
+            category: "2D Background",
+            thumbnail: "../images/store/hollow_knight.jpg",
+            type: "paid",
+            priceUSD: 11.99,
+            priceINR: 479,
+            link: "https://your-superprofile-link",
+            tag: "🏭 Steam"
+        }, {
+            id: 13,
+            name: "Sword & Shield Animations",
+            category: "2D Animation",
+            thumbnail: "../images/store/hollow_knight.jpg",
+            type: "free",
+            priceUSD: 0,
+            priceINR: 0,
+            link: "https://your-superprofile-link",
+            tag: "⚔️ Free"
+        }, {
+            id: 14,
+            name: "Epic Boss Music Pack",
+            category: "Sound Effects",
+            thumbnail: "../images/store/hollow_knight.jpg",
+            type: "paid",
+            priceUSD: 6.99,
+            priceINR: 279,
+            link: "https://your-superprofile-link",
+            tag: "🎶 Epic"
+        }, {
+            id: 15,
+            name: "Minimalist UI Kit",
+            category: "UI Kits",
+            thumbnail: "../images/store/hollow_knight.jpg",
+            type: "paid",
+            priceUSD: 7.50,
+            priceINR: 299,
+            link: "https://your-superprofile-link",
+            tag: "📱 Clean"
+        }, {
+            id: 16,
+            name: "Sci-Fi Weapon Set",
+            category: "Weapons",
+            thumbnail: "../images/store/hollow_knight.jpg",
+            type: "paid",
+            priceUSD: 15.99,
+            priceINR: 649,
+            link: "https://your-superprofile-link",
+            tag: "🚀 Futuristic"
+        }];
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  RENDER ENGINE
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+        const container = document.getElementById("productContainer");
+        const countEl = document.getElementById("assetCount");
+        const searchInput = document.getElementById("searchInput");
+        const sortSelect = document.getElementById("sortSelect");
+
+        let currentFilter = "All";
+        let currentSearch = "";
+
+        function getFilteredAssets() {
+            let list = [...assets];
+
+            // filter by category
+            if (currentFilter !== "All") {
+                list = list.filter(a => a.category === currentFilter);
+            }
+
+            // filter by search
+            if (currentSearch.trim() !== "") {
+                const q = currentSearch.toLowerCase().trim();
+                list = list.filter(a =>
+                    a.name.toLowerCase().includes(q) ||
+                    a.category.toLowerCase().includes(q) ||
+                    a.tag.toLowerCase().includes(q)
+                );
+            }
+
+            // sort
+            const sortVal = sortSelect.value;
+            switch (sortVal) {
+                case "name-asc":
+                    list.sort((a, b) => a.name.localeCompare(b.name));
+                    break;
+                case "name-desc":
+                    list.sort((a, b) => b.name.localeCompare(a.name));
+                    break;
+                case "price-asc":
+                    list.sort((a, b) => a.priceUSD - b.priceUSD);
+                    break;
+                case "price-desc":
+                    list.sort((a, b) => b.priceUSD - a.priceUSD);
+                    break;
+                default:
+                    // default: keep original order (by id)
+                    break;
+            }
+
+            return list;
+        }
+
+        function renderAssets(list) {
+            if (!container) return;
+            container.innerHTML = "";
+
+            if (list.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <span class="emoji">🍓</span>
+                        <h3>No assets found</h3>
+                        <p>Try adjusting your filters or search terms.</p>
+                    </div>
+                `;
+                countEl.textContent = "0 assets";
+                return;
+            }
+
+            countEl.textContent = `${list.length} asset${list.length > 1 ? 's' : ''}`;
+
+            list.forEach(asset => {
+                const card = document.createElement("div");
+                card.className = "card";
+
+                const isFree = asset.type === "free";
+                const thumbSrc = asset.thumbnail || "https://placehold.co/400x200/1f2937/ff2e55?text=🍓+Asset";
+
+                let actionsHTML = "";
+                if (isFree) {
+                    actionsHTML = `
+                        <a href="${asset.link}" target="_blank" class="btn btn-view">👁️ View Asset</a>
+                    `;
+                } else {
+                    actionsHTML = `
+                        <a href="${asset.link}" target="_blank" class="btn btn-buy-inr paid">₹ ${asset.priceINR}</a>
+                        <a href="${asset.link}" target="_blank" class="btn btn-buy-usd paid">$ ${asset.priceUSD.toFixed(2)}</a>
+                    `;
+                }
+
+                const badgeClass = isFree ? "free" : "paid";
+                const badgeLabel = isFree ? "🆓 Free" : "💳 Paid";
+
+                card.innerHTML = `
+                    <img class="preview" src="${thumbSrc}" loading="lazy" onerror="this.src='https://placehold.co/400x200/1f2937/ff2e55?text=🍓+Asset'" />
+                    <div class="card-content">
+                        <div class="card-top">
+                            <span class="category">📁 ${asset.category}</span>
+                            <span class="price-badge ${badgeClass}">${badgeLabel}</span>
+                        </div>
+                        <div class="asset-name">${asset.name}</div>
+                        <div class="tag">${asset.tag}</div>
+                        <div class="card-actions">
+                            ${actionsHTML}
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function updateUI() {
+            const filtered = getFilteredAssets();
+            renderAssets(filtered);
+        }
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  FILTER + SEARCH + SORT HANDLERS
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+        // Category filter buttons
+        document.querySelectorAll(".filter-btn").forEach(btn => {
+            btn.addEventListener("click", function() {
+                document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+                this.classList.add("active");
+                currentFilter = this.dataset.filter;
+                updateUI();
+            });
+        });
+
+        // Search
+        function searchAssets() {
+            currentSearch = searchInput.value;
+            updateUI();
+        }
+
+        searchInput.addEventListener("keypress", function(e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                searchAssets();
+            }
+        });
+
+        // Sort
+        sortSelect.addEventListener("change", updateUI);
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  INIT
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+        updateUI();
+
+        // Expose for inline onclick
+        window.searchAssets = searchAssets;
+    </script>
+
+</body>
+</html>
