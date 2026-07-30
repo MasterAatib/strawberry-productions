@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Strawberry Productions</title>
     <style>
-        /* ---------- RESET & BASE ---------- */
+        /* ---------- RESET ---------- */
         * {
             margin: 0;
             padding: 0;
@@ -39,29 +39,62 @@
             background: #161b22;
         }
 
-        /* ---------- HERO VIDEO (replaces logo) ---------- */
-        .hero-video {
-            width: 100%;
-            padding: 18px 2.5% 20px;
-            /* 95% width = 2.5% left + 2.5% right */
+        /* ---------- LOGO SECTION (with BG image) ---------- */
+        .logo {
+            position: relative;
+            text-align: center;
+            padding: 50px 20px 40px;
+            /* 👇 Replace with your own WebP background image */
+            background-image: url('images/logo-bg.webp');
+            background-size: cover;
+            background-position: center 30%;
+            background-repeat: no-repeat;
+            overflow: hidden;
+            min-height: 220px;
             display: flex;
-            justify-content: center;
             align-items: center;
-            background: #0d1117;
+            justify-content: center;
         }
 
-        .hero-video video {
-            width: 100%;
-            max-width: 100%;
+        /* Gradient overlay – fades from transparent (top) → bg colour (bottom) */
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70%;
+            /* matches body background */
+            background: linear-gradient(to bottom, transparent 0%, #0d1117 100%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Optional extra blend – subtle dark vignette at very bottom */
+        .logo::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 30%;
+            background: linear-gradient(to bottom, transparent, rgba(13, 17, 23, 0.6));
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .logo img {
+            position: relative;
+            z-index: 2;
+            width: 70vw;
+            max-width: 800px;
             height: auto;
-            display: block;
-            border-radius: 16px;
-            /* subtle rounding, matches card style */
-            background: #0d1117;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
+            display: inline-block;
+            /* subtle drop shadow to help the logo pop off the bg */
+            filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.5));
         }
 
-        /* ---------- SOCIAL ICONS ROW ---------- */
+        /* ---------- SOCIAL ROW ---------- */
         .social-row {
             display: flex;
             justify-content: center;
@@ -86,7 +119,7 @@
             filter: drop-shadow(0 0 6px #ff2e55);
         }
 
-        /* ---------- ADDON GRID (3 per row) ---------- */
+        /* ---------- ADDON GRID ---------- */
         .addon-list {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -176,13 +209,15 @@
         /* ---------- MOBILE ---------- */
         @media (max-width: 768px) {
 
-            /* video stays wide on mobile too */
-            .hero-video {
-                padding: 12px 2.5% 14px;
+            .logo {
+                padding: 30px 15px 30px;
+                min-height: 160px;
+                background-position: center 20%;
             }
 
-            .hero-video video {
-                border-radius: 10px;
+            .logo img {
+                width: 90vw;
+                filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.6));
             }
 
             .social-row {
@@ -214,12 +249,14 @@
         }
 
         /* ---------- TINY SCREENS ---------- */
-        @media (max-width: 400px) {
-            .hero-video {
-                padding: 8px 2% 10px;
+        @media (max-width: 480px) {
+            .logo {
+                min-height: 120px;
+                padding: 20px 12px 25px;
+                background-position: center 15%;
             }
-            .hero-video video {
-                border-radius: 6px;
+            .logo img {
+                width: 95vw;
             }
         }
     </style>
@@ -228,13 +265,9 @@
 
     <div class="main-scroll">
 
-        <!-- ===== HERO VIDEO (replaces logo) ===== -->
-        <div class="hero-video">
-            <video id="introVideo" autoplay muted playsinline preload="auto">
-                <source src="images/intro.webm" type="video/webm" />
-                <!-- fallback message for old browsers -->
-                Your browser does not support the video tag.
-            </video>
+        <!-- ===== LOGO with background image ===== -->
+        <div class="logo">
+            <img src="images/logo.png" alt="Strawberry Productions" />
         </div>
 
         <!-- ===== SOCIAL ICONS ===== -->
@@ -250,10 +283,10 @@
             </a>
         </div>
 
-        <!-- ===== ADDON LIST ===== -->
+        <!-- ===== ADDON GRID ===== -->
         <div class="addon-list">
 
-            <!-- ADDON CARD 1 -->
+            <!-- Card 1 -->
             <div class="addon-card">
                 <img src="images/genshin/genshin_x_craft.png" alt="Genshin X Craft" />
                 <div class="card-content">
@@ -263,7 +296,7 @@
                 </div>
             </div>
 
-            <!-- ADDON CARD 2 -->
+            <!-- Card 2 -->
             <div class="addon-card">
                 <img src="images/coldwheels/coldwheels.png" alt="Coldwheels" />
                 <div class="card-content">
@@ -273,7 +306,7 @@
                 </div>
             </div>
 
-            <!-- ADDON CARD 3 -->
+            <!-- Card 3 -->
             <div class="addon-card">
                 <img src="images/house/starter_house.png" alt="Starter House" />
                 <div class="card-content">
@@ -283,17 +316,17 @@
                 </div>
             </div>
 
-            <!-- ADDON CARD 4 -->
+            <!-- Card 4 -->
             <div class="addon-card">
                 <img src="images/top/top.png" alt="Tournament of Power" />
                 <div class="card-content">
                     <h3>Tournament of Power</h3>
-                    <p class="description">A Dragon ball super Themed Map.</p>
+                    <p class="description">A Dragon Ball Super themed Map.</p>
                     <a href="pages/top.html" class="view-btn">View Addon</a>
                 </div>
             </div>
 
-            <!-- ADDON CARD 5 -->
+            <!-- Card 5 -->
             <div class="addon-card">
                 <img src="images/mcog/player_like_npc.png" alt="Another Addon" />
                 <div class="card-content">
@@ -306,41 +339,6 @@
         </div>
 
     </div>
-
-    <!-- ===== SCRIPT: hold video on last frame ===== -->
-    <script>
-        (function() {
-            const video = document.getElementById('introVideo');
-
-            // If the video element exists, set up the "hold last frame" behavior
-            if (video) {
-                // When the video ends, pause it so it stays on the last frame
-                video.addEventListener('ended', function() {
-                    this.pause();
-                });
-
-                // Safety: if autoplay fails or video is stalled, try to play
-                // (some browsers block autoplay until user interaction)
-                video.addEventListener('loadedmetadata', function() {
-                    // If the video hasn't started playing after metadata loads,
-                    // try a muted autoplay again (most browsers allow muted autoplay)
-                    if (this.paused) {
-                        this.play().catch(function() {
-                            // If it fails, we do nothing – the user will see the
-                            // first frame and can interact with the page.
-                            // The 'ended' listener will still work once it plays.
-                        });
-                    }
-                });
-
-                // If the video fails to load at all, we don't want a broken UI
-                video.addEventListener('error', function() {
-                    // quietly swallow – the container will show the fallback text
-                    console.warn('Video failed to load. Check the file path.');
-                });
-            }
-        })();
-    </script>
 
 </body>
 </html>
