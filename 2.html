@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Strawberry Productions</title>
+    <style>
+        /* ---------- RESET & BASE ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #0d1117;
+            color: white;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* ---------- SCROLLABLE CONTAINER ---------- */
+        .main-scroll {
+            height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .main-scroll::-webkit-scrollbar {
+            width: 10px;
+        }
+        .main-scroll::-webkit-scrollbar-thumb {
+            background: #ff2e55;
+            border-radius: 20px;
+        }
+        .main-scroll::-webkit-scrollbar-track {
+            background: #161b22;
+        }
+
+        /* ---------- HERO VIDEO (replaces logo) ---------- */
+        .hero-video {
+            width: 100%;
+            padding: 18px 2.5% 20px;
+            /* 95% width = 2.5% left + 2.5% right */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #0d1117;
+        }
+
+        .hero-video video {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 16px;
+            /* subtle rounding, matches card style */
+            background: #0d1117;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
+        }
+
+        /* ---------- SOCIAL ICONS ROW ---------- */
+        .social-row {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 0 0 50px;
+            flex-wrap: wrap;
+        }
+
+        .social-row a img {
+            width: 300px;
+            height: auto;
+            display: block;
+            object-fit: contain;
+            transition: transform 0.3s, filter 0.3s;
+        }
+        .social-row a {
+            display: block;
+        }
+
+        .social-row a img:hover {
+            transform: scale(1.15);
+            filter: drop-shadow(0 0 6px #ff2e55);
+        }
+
+        /* ---------- ADDON GRID (3 per row) ---------- */
+        .addon-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            padding: 0 5% 50px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .addon-card {
+            background: #161b22;
+            border: 1px solid #2d333b;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .addon-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .addon-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent, rgba(255, 46, 85, .12));
+            opacity: 0;
+            transition: 0.3s;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .addon-card:hover::before {
+            opacity: 1;
+        }
+
+        .addon-card img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            display: block;
+        }
+
+        .card-content {
+            padding: 15px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-content h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .card-content .description {
+            color: #9ca3af;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            flex: 1;
+        }
+
+        .card-content .view-btn {
+            display: block;
+            text-align: center;
+            padding: 10px;
+            background: #ff2e55;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            margin-top: auto;
+            transition: background 0.2s;
+        }
+
+        .view-btn:hover {
+            background: #e0294c;
+        }
+
+        /* ---------- MOBILE ---------- */
+        @media (max-width: 768px) {
+
+            /* video stays wide on mobile too */
+            .hero-video {
+                padding: 12px 2.5% 14px;
+            }
+
+            .hero-video video {
+                border-radius: 10px;
+            }
+
+            .social-row {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+                padding: 0 15px;
+                margin-bottom: 30px;
+            }
+
+            .social-row a img {
+                width: 100%;
+                border-radius: 12px;
+                display: block;
+            }
+
+            .social-row a img:hover {
+                transform: none;
+            }
+
+            .addon-list {
+                grid-template-columns: 1fr;
+                padding: 0 5% 40px;
+            }
+
+            .addon-card img {
+                height: auto;
+            }
+        }
+
+        /* ---------- TINY SCREENS ---------- */
+        @media (max-width: 400px) {
+            .hero-video {
+                padding: 8px 2% 10px;
+            }
+            .hero-video video {
+                border-radius: 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-scroll">
+
+        <!-- ===== HERO VIDEO (replaces logo) ===== -->
+        <div class="hero-video">
+            <video id="introVideo" autoplay muted playsinline preload="auto">
+                <source src="images/intro.webm" type="video/webm" />
+                <!-- fallback message for old browsers -->
+                Your browser does not support the video tag.
+            </video>
+        </div>
+
+        <!-- ===== SOCIAL ICONS ===== -->
+        <div class="social-row">
+            <a href="pages/store.html">
+                <img src="images/store/store_banner.png" alt="Store" />
+            </a>
+            <a href="https://youtube.com/@yourchannel" target="_blank">
+                <img src="images/store/youtube_banner.png" alt="YouTube" />
+            </a>
+            <a href="https://discord.gg/yourinvite" target="_blank">
+                <img src="images/store/discord_banner.png" alt="Discord" />
+            </a>
+        </div>
+
+        <!-- ===== ADDON LIST ===== -->
+        <div class="addon-list">
+
+            <!-- ADDON CARD 1 -->
+            <div class="addon-card">
+                <img src="images/genshin/genshin_x_craft.png" alt="Genshin X Craft" />
+                <div class="card-content">
+                    <h3>Genshin X Craft</h3>
+                    <p class="description">An epic Genshin Impact themed addon with new weapons, mobs and biomes.</p>
+                    <a href="pages/genshin_x_craft.html" class="view-btn">View Addon</a>
+                </div>
+            </div>
+
+            <!-- ADDON CARD 2 -->
+            <div class="addon-card">
+                <img src="images/coldwheels/coldwheels.png" alt="Coldwheels" />
+                <div class="card-content">
+                    <h3>Coldwheels</h3>
+                    <p class="description">Adds drivable Hot Wheels style cars to your Minecraft world.</p>
+                    <a href="pages/coldwheels.html" class="view-btn">View Addon</a>
+                </div>
+            </div>
+
+            <!-- ADDON CARD 3 -->
+            <div class="addon-card">
+                <img src="images/house/starter_house.png" alt="Starter House" />
+                <div class="card-content">
+                    <h3>Starter House</h3>
+                    <p class="description">Spawn in a fully furnished survival house right when you start.</p>
+                    <a href="pages/starter_house.html" class="view-btn">View Addon</a>
+                </div>
+            </div>
+
+            <!-- ADDON CARD 4 -->
+            <div class="addon-card">
+                <img src="images/top/top.png" alt="Tournament of Power" />
+                <div class="card-content">
+                    <h3>Tournament of Power</h3>
+                    <p class="description">A Dragon ball super Themed Map.</p>
+                    <a href="pages/top.html" class="view-btn">View Addon</a>
+                </div>
+            </div>
+
+            <!-- ADDON CARD 5 -->
+            <div class="addon-card">
+                <img src="images/mcog/player_like_npc.png" alt="Another Addon" />
+                <div class="card-content">
+                    <h3>Another Addon</h3>
+                    <p class="description">Short description goes here – just edit this text.</p>
+                    <a href="pages/new_addon.html" class="view-btn">View Addon</a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ===== SCRIPT: hold video on last frame ===== -->
+    <script>
+        (function() {
+            const video = document.getElementById('introVideo');
+
+            // If the video element exists, set up the "hold last frame" behavior
+            if (video) {
+                // When the video ends, pause it so it stays on the last frame
+                video.addEventListener('ended', function() {
+                    this.pause();
+                });
+
+                // Safety: if autoplay fails or video is stalled, try to play
+                // (some browsers block autoplay until user interaction)
+                video.addEventListener('loadedmetadata', function() {
+                    // If the video hasn't started playing after metadata loads,
+                    // try a muted autoplay again (most browsers allow muted autoplay)
+                    if (this.paused) {
+                        this.play().catch(function() {
+                            // If it fails, we do nothing – the user will see the
+                            // first frame and can interact with the page.
+                            // The 'ended' listener will still work once it plays.
+                        });
+                    }
+                });
+
+                // If the video fails to load at all, we don't want a broken UI
+                video.addEventListener('error', function() {
+                    // quietly swallow – the container will show the fallback text
+                    console.warn('Video failed to load. Check the file path.');
+                });
+            }
+        })();
+    </script>
+
+</body>
+</html>
