@@ -42,9 +42,9 @@
         /* ---------- LOGO SECTION (with BG image) ---------- */
         .logo {
             position: relative;
+            z-index: 1;              /* layer 3: logo container */
             text-align: center;
             padding: 50px 20px 40px;
-            /* 👇 Replace with your own WebP background image */
             background-image: url('images/logo-bg.webp');
             background-size: cover;
             background-position: center 30%;
@@ -64,13 +64,12 @@
             left: 0;
             right: 0;
             height: 70%;
-            /* matches body background */
             background: linear-gradient(to bottom, transparent 0%, #0d1117 100%);
             pointer-events: none;
-            z-index: 1;
+            z-index: 0;             /* behind the logo image */
         }
 
-        /* Optional extra blend – subtle dark vignette at very bottom */
+        /* Subtle dark vignette at very bottom */
         .logo::before {
             content: '';
             position: absolute;
@@ -80,27 +79,35 @@
             height: 30%;
             background: linear-gradient(to bottom, transparent, rgba(13, 17, 23, 0.6));
             pointer-events: none;
-            z-index: 1;
+            z-index: 0;             /* behind the logo image */
         }
 
         .logo img {
             position: relative;
-            z-index: 2;
+            z-index: 1;             /* layer 3: logo image (above bg) */
             width: 70vw;
             max-width: 800px;
             height: auto;
             display: inline-block;
-            /* subtle drop shadow to help the logo pop off the bg */
             filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.5));
         }
 
-        /* ---------- SOCIAL ROW ---------- */
+        /* ---------- SOCIAL ROW (now overlaps the logo and lives on top) ---------- */
         .social-row {
+            position: relative;
+            z-index: 10;            /* layer 1 & 2: socials + glow on top of everything */
             display: flex;
             justify-content: center;
             gap: 30px;
-            margin: 0 0 50px;
             flex-wrap: wrap;
+            margin-top: -30px;      /* pull up over the bottom of the logo area */
+            margin-bottom: 20px;    /* keep good spacing before cards */
+            padding: 0 10px;
+        }
+
+        .social-row a {
+            display: block;
+            transition: transform 0.3s, filter 0.3s;
         }
 
         .social-row a img {
@@ -108,15 +115,18 @@
             height: auto;
             display: block;
             object-fit: contain;
+            border-radius: 8px;      /* optional, matches your vibe */
             transition: transform 0.3s, filter 0.3s;
         }
-        .social-row a {
-            display: block;
+
+        /* Pink glow on hover – layer 2, naturally on top because of z-index:10 */
+        .social-row a:hover {
+            transform: scale(1.05);
         }
 
         .social-row a img:hover {
             transform: scale(1.15);
-            filter: drop-shadow(0 0 6px #ff2e55);
+            filter: drop-shadow(0 0 16px #ff2e55) drop-shadow(0 0 6px #ff2e55);
         }
 
         /* ---------- ADDON GRID ---------- */
@@ -225,7 +235,8 @@
                 grid-template-columns: repeat(3, 1fr);
                 gap: 10px;
                 padding: 0 15px;
-                margin-bottom: 30px;
+                margin-top: -20px;      /* still overlaps, but less aggressively */
+                margin-bottom: 15px;
             }
 
             .social-row a img {
@@ -234,8 +245,12 @@
                 display: block;
             }
 
+            .social-row a:hover {
+                transform: none;        /* avoid weird scaling on tiny touch targets */
+            }
             .social-row a img:hover {
-                transform: none;
+                transform: scale(1.08);
+                filter: drop-shadow(0 0 12px #ff2e55);
             }
 
             .addon-list {
@@ -258,6 +273,10 @@
             .logo img {
                 width: 95vw;
             }
+            .social-row {
+                margin-top: -12px;
+                gap: 6px;
+            }
         }
     </style>
 </head>
@@ -270,7 +289,7 @@
             <img src="images/logo.png" alt="Strawberry Productions" />
         </div>
 
-        <!-- ===== SOCIAL ICONS ===== -->
+        <!-- ===== SOCIAL ICONS (now overlapping the logo, on top) ===== -->
         <div class="social-row">
             <a href="pages/store.html">
                 <img src="images/store/store_banner.png" alt="Store" />
