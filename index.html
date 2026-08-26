@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Strawberry Productions</title>
+
+    <!-- Fuse.js for fuzzy search -->
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
+
     <style>
         /* ---------- RESET ---------- */
         * {
@@ -39,10 +43,157 @@
             background: #161b22;
         }
 
+        /* ---------- NAVIGATION BAR ---------- */
+        .navbar {
+            background: #111827;
+            padding: 10px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            border-bottom: 1px solid #2d333b;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-left .nav-icon {
+            height: 60px;
+            width: auto;
+            display: block;
+        }
+
+        .nav-left .nav-title {
+            height: 60px;
+            width: auto;
+            display: block;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Search box */
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: #1f2937;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .search-box input {
+            padding: 10px 15px;
+            border: none;
+            outline: none;
+            background: transparent;
+            color: white;
+            font-size: 15px;
+            width: 220px;
+            min-width: 140px;
+        }
+
+        .search-box input::placeholder {
+            color: #9ca3af;
+        }
+
+        .search-box button {
+            padding: 10px 18px;
+            border: none;
+            background: #ff2e55;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        .search-box button:hover {
+            background: #e0294c;
+        }
+
+        /* ---------- MORE (⋮) BUTTON & POPUP ---------- */
+        .more-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .more-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 28px;
+            line-height: 1;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            font-weight: bold;
+        }
+
+        .more-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: scale(1.05);
+        }
+
+        .more-btn:active {
+            transform: scale(0.92);
+        }
+
+        .more-popup {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background: #161b22;
+            border: 1px solid #2d333b;
+            border-radius: 16px;
+            padding: 10px 0;
+            min-width: 160px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+
+            /* Animation */
+            opacity: 0;
+            transform: scale(0.92) translateY(-10px);
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            z-index: 200;
+        }
+
+        .more-popup.open {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            pointer-events: auto;
+        }
+
+        .more-popup a {
+            display: block;
+            padding: 10px 24px;
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: background 0.15s;
+            border-radius: 6px;
+            margin: 0 8px;
+        }
+
+        .more-popup a:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
         /* ---------- LOGO SECTION (with BG image) ---------- */
         .logo {
             position: relative;
-            z-index: 1;              /* layer 3: logo container */
+            z-index: 1;
             text-align: center;
             padding: 50px 20px 40px;
             background-image: url('images/logo_bg.webp');
@@ -56,7 +207,6 @@
             justify-content: center;
         }
 
-        /* Gradient overlay – fades from transparent (top) → bg colour (bottom) */
         .logo::after {
             content: '';
             position: absolute;
@@ -66,10 +216,9 @@
             height: 70%;
             background: linear-gradient(to bottom, transparent 0%, #0d1117 100%);
             pointer-events: none;
-            z-index: 0;             /* behind the logo image */
+            z-index: 0;
         }
 
-        /* Subtle dark vignette at very bottom */
         .logo::before {
             content: '';
             position: absolute;
@@ -79,12 +228,12 @@
             height: 30%;
             background: linear-gradient(to bottom, transparent, rgba(13, 17, 23, 0.6));
             pointer-events: none;
-            z-index: 0;             /* behind the logo image */
+            z-index: 0;
         }
 
         .logo img {
             position: relative;
-            z-index: 1;             /* layer 3: logo image (above bg) */
+            z-index: 1;
             width: 70vw;
             max-width: 800px;
             height: auto;
@@ -92,16 +241,16 @@
             filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.5));
         }
 
-        /* ---------- SOCIAL ROW (now overlaps the logo and lives on top) ---------- */
+        /* ---------- SOCIAL ROW ---------- */
         .social-row {
             position: relative;
-            z-index: 10;            /* layer 1 & 2: socials + glow on top of everything */
+            z-index: 10;
             display: flex;
             justify-content: center;
             gap: 30px;
             flex-wrap: wrap;
-            margin-top: -30px;      /* pull up over the bottom of the logo area */
-            margin-bottom: 20px;    /* keep good spacing before cards */
+            margin-top: -30px;
+            margin-bottom: 20px;
             padding: 0 10px;
         }
 
@@ -115,11 +264,10 @@
             height: auto;
             display: block;
             object-fit: contain;
-            border-radius: 8px;      /* optional, matches your vibe */
+            border-radius: 8px;
             transition: transform 0.3s, filter 0.3s;
         }
 
-        /* Pink glow on hover – layer 2, naturally on top because of z-index:10 */
         .social-row a:hover {
             transform: scale(1.05);
         }
@@ -144,7 +292,7 @@
             border: 1px solid #2d333b;
             border-radius: 15px;
             overflow: hidden;
-            transition: transform 0.3s;
+            transition: transform 0.3s, opacity 0.2s;
             display: flex;
             flex-direction: column;
             position: relative;
@@ -216,8 +364,75 @@
             background: #e0294c;
         }
 
+        /* Hide cards not matching search */
+        .addon-card.hidden {
+            display: none;
+        }
+
+        /* No results message */
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px 20px;
+            color: #9ca3af;
+            font-size: 18px;
+            display: none;
+        }
+
+        .no-results.show {
+            display: block;
+        }
+
         /* ---------- MOBILE ---------- */
         @media (max-width: 768px) {
+            .navbar {
+                padding: 10px 4%;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+
+            .nav-left {
+                justify-content: center;
+            }
+
+            .nav-left .nav-icon {
+                height: 40px;
+            }
+
+            .nav-left .nav-title {
+                height: 32px;
+            }
+
+            .nav-right {
+                flex-direction: row;
+                gap: 8px;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .search-box {
+                flex: 1;
+            }
+
+            .search-box input {
+                width: 100%;
+                flex: 1;
+                min-width: 80px;
+            }
+
+            .search-box button {
+                padding: 10px 14px;
+            }
+
+            .more-btn {
+                font-size: 26px;
+                padding: 6px 10px;
+            }
+
+            .more-popup {
+                right: -10px;
+            }
 
             .logo {
                 padding: 30px 15px 30px;
@@ -227,7 +442,6 @@
 
             .logo img {
                 width: 90vw;
-                filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.6));
             }
 
             .social-row {
@@ -235,7 +449,7 @@
                 grid-template-columns: repeat(3, 1fr);
                 gap: 10px;
                 padding: 0 15px;
-                margin-top: -20px;      /* still overlaps, but less aggressively */
+                margin-top: -20px;
                 margin-bottom: 15px;
             }
 
@@ -246,7 +460,7 @@
             }
 
             .social-row a:hover {
-                transform: none;        /* avoid weird scaling on tiny touch targets */
+                transform: none;
             }
             .social-row a img:hover {
                 transform: scale(1.08);
@@ -263,7 +477,6 @@
             }
         }
 
-        /* ---------- TINY SCREENS ---------- */
         @media (max-width: 480px) {
             .logo {
                 min-height: 120px;
@@ -277,6 +490,14 @@
                 margin-top: -12px;
                 gap: 6px;
             }
+
+            .nav-left .nav-icon {
+                height: 32px;
+            }
+
+            .nav-left .nav-title {
+                height: 26px;
+            }
         }
     </style>
 </head>
@@ -284,12 +505,39 @@
 
     <div class="main-scroll">
 
+        <!-- ===== NAVIGATION BAR ===== -->
+        <nav class="navbar">
+            <!-- Left: icon + title -->
+            <div class="nav-left">
+                <img src="images/strawberryicon.png" alt="Strawberry Productions" class="nav-icon" />
+                <img src="images/title.png" alt="Strawberry Productions" class="nav-title" />
+            </div>
+
+            <!-- Right: search + more button -->
+            <div class="nav-right">
+                <div class="search-box">
+                    <input type="text" placeholder="Search addons…" id="searchInput" />
+                    <button id="searchBtn">Search</button>
+                </div>
+
+                <!-- More (⋮) button with popup -->
+                <div class="more-wrapper">
+                    <button class="more-btn" id="moreBtn" aria-label="More">⋮</button>
+                    <div class="more-popup" id="morePopup">
+                        <a href="about.html">About</a>
+                        <a href="grow.html">Grow with us</a>
+                        <a href="links.html">Links</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
         <!-- ===== LOGO with background image ===== -->
         <div class="logo">
             <img src="images/logo.png" alt="Strawberry Productions" />
         </div>
 
-        <!-- ===== SOCIAL ICONS (now overlapping the logo, on top) ===== -->
+        <!-- ===== SOCIAL ICONS ===== -->
         <div class="social-row">
             <a href="pages/store.html">
                 <img src="images/store/store_banner.png" alt="Store" />
@@ -303,10 +551,10 @@
         </div>
 
         <!-- ===== ADDON GRID ===== -->
-        <div class="addon-list">
+        <div class="addon-list" id="addonGrid">
 
             <!-- Card 1 -->
-            <div class="addon-card">
+            <div class="addon-card" data-title="Genshin X Craft" data-desc="An epic Genshin Impact themed addon with new weapons, mobs and biomes.">
                 <img src="images/genshin/genshin_x_craft.png" alt="Genshin X Craft" />
                 <div class="card-content">
                     <h3>Genshin X Craft</h3>
@@ -316,7 +564,7 @@
             </div>
 
             <!-- Card 2 -->
-            <div class="addon-card">
+            <div class="addon-card" data-title="Coldwheels" data-desc="Adds drivable Hot Wheels style cars to your Minecraft world.">
                 <img src="images/coldwheels/coldwheels.png" alt="Coldwheels" />
                 <div class="card-content">
                     <h3>Coldwheels</h3>
@@ -326,7 +574,7 @@
             </div>
 
             <!-- Card 3 -->
-            <div class="addon-card">
+            <div class="addon-card" data-title="Starter House" data-desc="Spawn in a fully furnished survival house right when you start.">
                 <img src="images/house/starter_house.png" alt="Starter House" />
                 <div class="card-content">
                     <h3>Starter House</h3>
@@ -336,7 +584,7 @@
             </div>
 
             <!-- Card 4 -->
-            <div class="addon-card">
+            <div class="addon-card" data-title="Tournament of Power" data-desc="A Dragon Ball Super themed Map.">
                 <img src="images/top/top.png" alt="Tournament of Power" />
                 <div class="card-content">
                     <h3>Tournament of Power</h3>
@@ -346,7 +594,7 @@
             </div>
 
             <!-- Card 5 -->
-            <div class="addon-card">
+            <div class="addon-card" data-title="Another Addon" data-desc="Short description goes here – just edit this text.">
                 <img src="images/mcog/player_like_npc.png" alt="Another Addon" />
                 <div class="card-content">
                     <h3>Another Addon</h3>
@@ -355,9 +603,136 @@
                 </div>
             </div>
 
+            <!-- No results message -->
+            <div class="no-results" id="noResults">No addons found. Try a different keyword!</div>
+
         </div>
 
     </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // ---------- MORE POPUP ----------
+            const moreBtn = document.getElementById('moreBtn');
+            const morePopup = document.getElementById('morePopup');
+
+            function togglePopup(e) {
+                e.stopPropagation();
+                morePopup.classList.toggle('open');
+            }
+
+            moreBtn.addEventListener('click', togglePopup);
+
+            // Close popup when clicking outside
+            document.addEventListener('click', function(e) {
+                const wrapper = document.querySelector('.more-wrapper');
+                if (wrapper && !wrapper.contains(e.target)) {
+                    morePopup.classList.remove('open');
+                }
+            });
+
+            // Close popup after clicking a link
+            morePopup.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    morePopup.classList.remove('open');
+                });
+            });
+
+            // ---------- FUSE.JS SEARCH ----------
+            const cards = document.querySelectorAll('.addon-card');
+            const noResults = document.getElementById('noResults');
+            const searchInput = document.getElementById('searchInput');
+            const searchBtn = document.getElementById('searchBtn');
+
+            // Build data array for Fuse
+            const addonData = [];
+            cards.forEach(card => {
+                const title = card.dataset.title || card.querySelector('h3')?.textContent?.trim() || '';
+                const desc = card.dataset.desc || card.querySelector('.description')?.textContent?.trim() || '';
+                const link = card.querySelector('.view-btn')?.getAttribute('href') || '#';
+                addonData.push({
+                    title: title,
+                    desc: desc,
+                    link: link,
+                    element: card
+                });
+            });
+
+            // Fuse options (fuzzy, typo-tolerant)
+            const fuseOptions = {
+                keys: [
+                    { name: 'title', weight: 3 },
+                    { name: 'desc', weight: 2 }
+                ],
+                threshold: 0.35,          // typo tolerance (e.g. "gensin" → "Genshin")
+                distance: 100,
+                includeScore: true,
+                ignoreLocation: true,
+                minMatchCharLength: 2,
+                shouldSort: true,
+                findAllMatches: true
+            };
+
+            const fuse = new Fuse(addonData, fuseOptions);
+
+            function performSearch(query) {
+                const trimmed = query.trim();
+
+                // If search is empty, show all cards
+                if (trimmed.length === 0) {
+                    cards.forEach(card => card.classList.remove('hidden'));
+                    noResults.classList.remove('show');
+                    return;
+                }
+
+                const results = fuse.search(trimmed);
+                const foundIds = new Set(results.map(r => r.item.element));
+
+                let anyVisible = false;
+                cards.forEach(card => {
+                    if (foundIds.has(card)) {
+                        card.classList.remove('hidden');
+                        anyVisible = true;
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+
+                noResults.classList.toggle('show', !anyVisible);
+            }
+
+            // Live search on input (with debounce)
+            let debounceTimer;
+            searchInput.addEventListener('input', function() {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(() => {
+                    performSearch(this.value);
+                }, 200);
+            });
+
+            // Search on button click
+            searchBtn.addEventListener('click', function() {
+                performSearch(searchInput.value);
+            });
+
+            // Search on Enter key
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    performSearch(this.value);
+                }
+            });
+
+            // Initial state: show all
+            cards.forEach(card => card.classList.remove('hidden'));
+            noResults.classList.remove('show');
+
+            console.log('🔍 Fuse.js search ready — ' + addonData.length + ' addons indexed.');
+
+        })();
+    </script>
 
 </body>
 </html>
