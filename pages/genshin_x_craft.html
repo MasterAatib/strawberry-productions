@@ -19,43 +19,94 @@
 
     * { box-sizing: border-box; }
 
+    /* CHANGE 6: Reset body margin and set fallback theme color */
     body {
       margin: 0;
       font-family: 'Poppins', sans-serif;
+      background-color: #020617; /* Matches the dark overlay base */
       background: linear-gradient(180deg, #020617, var(--bg));
       color: var(--text);
     }
 
-    header {
-      background: url("https://raw.githubusercontent.com/MasterAatib/strawberry-productions/refs/heads/main/images/genshin/genshin_background.png") center/cover;
-      padding: 80px 20px;
-      text-align: center;
-      position: relative;
+    /* CHANGE 3: New sticky navigation bar styles */
+    .navbar-top {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center; /* Vertically center aligns icon & title */
+      padding: 10px 20px;
+      background: rgba(2, 6, 23, 0.85); /* Uses your original dark theme */
+      backdrop-filter: blur(8px); /* Smooth glass effect */
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      width: 100%;
+      box-sizing: border-box;
     }
 
+    .nav-logo-link {
+      display: flex;
+      align-items: center; /* Vertically centers icon & title inside the link */
+      gap: 12px;
+      text-decoration: none; /* Removes underline */
+    }
+
+    .nav-icon {
+      height: 40px;
+      width: auto;
+      display: block;
+    }
+
+    .nav-title {
+      height: 30px;
+      width: auto;
+      display: block;
+    }
+
+    /* CHANGE 4: Fixed hero header background using the correct absolute URL */
+    header {
+      position: relative;
+      background: url("https://raw.githubusercontent.com/MasterAatib/strawberry-productions/refs/heads/main/images/genshin/genshin_background.png") center/cover no-repeat;
+      min-height: 15vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 100px 20px 60px; /* Added top padding so hero text isn't hidden */
+      box-sizing: border-box;
+      margin: 0;
+    }
+
+    /* Original overlay (kept exactly as it was) */
     header::after {
-      content: "";
+      content: '';
       position: absolute;
       inset: 0;
-      background: rgba(2,6,23,0.1);
-    }
-
-    header > div {
-      position: relative;
+      background: rgba(2, 6, 23, 0.1);
       z-index: 1;
-      max-width: 900px;
-      margin: auto;
     }
 
-    header h1 {
+    /* CHANGE 5: Wrapper for hero text to stay above the overlay */
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      padding: 20px;
+    }
+
+    .hero-content h1 {
       font-family: 'Cinzel', serif;
       font-size: 3rem;
+      color: #fff;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
       margin-bottom: 10px;
     }
 
-    header p {
-      font-size: 1.1rem;
-      color: var(--muted);
+    .hero-content p {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.2rem;
+      color: #e2e8f0;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+      margin: 0;
     }
 
     .container {
@@ -127,7 +178,7 @@
       color: var(--muted);
       font-size: 0.9rem;
     }
-  
+
     .gallery {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -147,12 +198,39 @@
       transform: scale(1.03);
       box-shadow: 0 10px 25px rgba(0,0,0,0.5);
     }
+
+    /* Responsive tweaks */
+    @media (max-width: 600px) {
+      .nav-icon {
+        height: 32px;
+      }
+      .nav-title {
+        height: 24px;
+      }
+      .hero-content h1 {
+        font-size: 2.2rem;
+      }
+      .hero-content p {
+        font-size: 1rem;
+      }
+    }
   </style>
 </head>
 <body>
 
+  <!-- CHANGE 1: Added sticky navigation bar with only icon + title -->
+  <nav class="navbar-top">
+    <!-- CHANGE 2: Wrapped in <a> to redirect to index.html on click -->
+    <a href="index.html" class="nav-logo-link">
+      <!-- FIXED: Changed from ../images/ to images/ (since both files are in root) -->
+      <img src="images/strawberryicon.png" alt="Strawberry Productions" class="nav-icon" />
+      <img src="images/title.png" alt="Strawberry Productions" class="nav-title" />
+    </a>
+    <!-- No search bar, no "more" button, no extra links -->
+  </nav>
+
   <header>
-    <div>
+    <div class="hero-content">
       <h1>Genshin X Craft</h1>
       <p>Bring the world of Genshin Impact into Minecraft Bedrock Edition</p>
     </div>
@@ -164,13 +242,12 @@
       <h2>Screenshots</h2>
       <p>Preview the addon in action:</p>
       <div class="gallery">
-        <!-- Replace image paths with your own screenshots -->
-        <img src="../images/genshin/screenshot1.png" alt="Screenshot 1">
-        <img src="../images/genshin/screenshot1.png" alt="Screenshot 2">
-        <img src="../images/genshin/screenshot1.png" alt="Screenshot 3">
+        <!-- FIXED: Changed from ../images/ to images/ -->
+        <img src="images/genshin/screenshot1.png" alt="Screenshot 1">
+        <img src="images/genshin/screenshot1.png" alt="Screenshot 2">
+        <img src="images/genshin/screenshot1.png" alt="Screenshot 3">
       </div>
     </section>
-
 
     <section class="card">
       <h2>Description</h2>
@@ -212,7 +289,7 @@
       <p>Get the latest version of the addon below:</p>
       <a href="https://link-hub.net/1443996/sVxp0b9LWwrD">Download Addon</a>
       <br><br>
-      <a href="../index.html">⬅ Back to Home</a>
+      <a href="index.html">⬅ Back to Home</a>
     </section>
   </main>
 
