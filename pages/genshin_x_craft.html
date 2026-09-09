@@ -17,52 +17,56 @@
       --muted: #ececec;
     }
 
-    * { box-sizing: border-box; }
-
-    /* CHANGE 6: Reset body margin and set fallback theme color */
-    body {
+    * {
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
       font-family: 'Poppins', sans-serif;
-      background-color: #020617; /* Matches the dark overlay base */
-      background: linear-gradient(180deg, #020617, var(--bg));
-      color: var(--text);
     }
 
-    /* CHANGE 3: New sticky navigation bar styles */
+    body {
+      background: #0d0822;
+      background: linear-gradient(180deg, #020617, var(--bg));
+      color: var(--text);
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Sticky Navigation Bar */
     .navbar-top {
       position: sticky;
       top: 0;
       z-index: 100;
       display: flex;
-      align-items: center; /* Vertically center aligns icon & title */
+      align-items: center;
       padding: 10px 20px;
-      background: rgba(2, 6, 23, 0.85); /* Uses your original dark theme */
-      backdrop-filter: blur(8px); /* Smooth glass effect */
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(10, 10, 40, 0.99);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(136, 127, 255, 1.0);
       width: 100%;
       box-sizing: border-box;
     }
 
     .nav-logo-link {
       display: flex;
-      align-items: center; /* Vertically centers icon & title inside the link */
-      gap: 12px;
-      text-decoration: none; /* Removes underline */
+      align-items: center;
+      gap: 20px;
+      text-decoration: none;
     }
 
     .nav-icon {
-      height: 40px;
+      height: 100px;
       width: auto;
       display: block;
     }
 
     .nav-title {
-      height: 30px;
+      height: 60px;
       width: auto;
       display: block;
     }
 
-    /* CHANGE 4: Fixed hero header background using the correct absolute URL */
+    /* Hero Header */
     header {
       position: relative;
       background: url("https://raw.githubusercontent.com/MasterAatib/strawberry-productions/refs/heads/main/images/genshin/genshin_background.png") center/cover no-repeat;
@@ -71,12 +75,11 @@
       justify-content: center;
       align-items: center;
       text-align: center;
-      padding: 100px 20px 60px; /* Added top padding so hero text isn't hidden */
+      padding: 100px 20px 60px;
       box-sizing: border-box;
       margin: 0;
     }
 
-    /* Original overlay (kept exactly as it was) */
     header::after {
       content: '';
       position: absolute;
@@ -85,7 +88,6 @@
       z-index: 1;
     }
 
-    /* CHANGE 5: Wrapper for hero text to stay above the overlay */
     .hero-content {
       position: relative;
       z-index: 2;
@@ -109,6 +111,31 @@
       margin: 0;
     }
 
+    /* Scroll Container (matches index.html) */
+    .main-scroll {
+      height: 100vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    .main-scroll::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    .main-scroll::-webkit-scrollbar-thumb {
+      background: #38bdf8;
+      border-radius: 6px;
+    }
+
+    .main-scroll::-webkit-scrollbar-thumb:hover {
+      background: #0edbff;
+    }
+
+    .main-scroll::-webkit-scrollbar-track {
+      background: #020617;
+    }
+
     .container {
       max-width: 1100px;
       margin: 40px auto;
@@ -128,6 +155,11 @@
       margin-top: 0;
       border-bottom: 1px solid #1f2933;
       padding-bottom: 10px;
+    }
+
+    /* Override for inner headings inside description (keep MCPEDL style) */
+    .card h1, .card h3 {
+      font-family: 'Cinzel', serif;
     }
 
     .features ul {
@@ -218,83 +250,198 @@
 </head>
 <body>
 
-  <!-- CHANGE 1: Added sticky navigation bar with only icon + title -->
+  <!-- Sticky Navbar (only icon + title, redirects to index) -->
   <nav class="navbar-top">
-    <!-- CHANGE 2: Wrapped in <a> to redirect to index.html on click -->
     <a href="../index.html" class="nav-logo-link">
-      <!-- FIXED: Changed from ../images/ to images/ (since both files are in root) -->
       <img src="../images/strawberryicon.png" alt="Strawberry Productions" class="nav-icon" />
       <img src="../images/title.png" alt="Strawberry Productions" class="nav-title" />
     </a>
-    <!-- No search bar, no "more" button, no extra links -->
   </nav>
 
-  <header>
-    <div class="hero-content">
-      <h1>Genshin X Craft</h1>
-      <p>Bring the world of Genshin Impact into Minecraft Bedrock Edition</p>
-    </div>
-  </header>
+  <!-- Scrollable wrapper -->
+  <div class="main-scroll">
 
-  <main class="container">
-
-    <section class="card">
-      <h2>Screenshots</h2>
-      <p>Preview the addon in action:</p>
-      <div class="gallery">
-        <!-- FIXED: Changed from ../images/ to images/ -->
-        <img src="images/genshin/screenshot1.png" alt="Screenshot 1">
-        <img src="images/genshin/screenshot1.png" alt="Screenshot 2">
-        <img src="images/genshin/screenshot1.png" alt="Screenshot 3">
+    <!-- Hero Header -->
+    <header>
+      <div class="hero-content">
+        <h1>Genshin X Craft</h1>
+        <p>Bring the world of Genshin Impact into Minecraft Bedrock Edition</p>
       </div>
-    </section>
+    </header>
 
-    <section class="card">
-      <h2>Description</h2>
-      <p>
-        <strong>Genshin X Craft</strong> is a Minecraft Bedrock addon inspired by
-        <em>Genshin Impact</em>. It introduces elemental weapons, mobs, and mechanics
-        designed to feel close to the original game while remaining balanced
-        for survival gameplay.
-      </p>
-      <p>
-        Explore a fantasy-style experience where elements matter, combat feels
-        dynamic, and your Minecraft world becomes infused with Genshin energy.
-      </p>
-    </section>
+    <main class="container">
 
-    <section class="card features">
-      <h2>Features</h2>
-      <ul>
-        <li>Custom Genshin-inspired weapons</li>
-        <li>Elemental effects (Pyro, Cryo, Electro, etc.)</li>
-        <li>New mobs and bosses</li>
-        <li>Survival-friendly balance</li>
-        <li>Bedrock Edition support</li>
-      </ul>
-    </section>
+      <!-- ==========================================================
+           SCREENSHOTS SECTION (unchanged)
+           ========================================================== -->
+      <section class="card">
+        <h2>Screenshots</h2><br>
+        <p>Preview the addon in action:</p>
+        <div class="gallery">
+          <img src="images/genshin/screenshot1.png" alt="Screenshot 1">
+          <img src="images/genshin/screenshot1.png" alt="Screenshot 2">
+          <img src="images/genshin/screenshot1.png" alt="Screenshot 3">
+        </div>
+      </section>
 
-    <section class="card">
-      <h2>Addon Info</h2>
-      <div class="info-grid">
-        <div class="info-box"><strong>Game Version:</strong><br> Minecraft Bedrock</div>
-        <div class="info-box"><strong>Category:</strong><br> Bedrock Addon </div>
-        <div class="info-box"><strong>Creator:</strong><br> Strawberry Pro</div>
-        <div class="info-box"><strong>Status:</strong><br> Ongoing</div>
-      </div>
-    </section>
+      <!-- ==========================================================
+           🔥 UPDATED DESCRIPTION (MCPEDL style content)
+           ========================================================== -->
+      <section class="card">
+        <h2>Description:</h2>
+        <h3>
+          <br>New Mob : Paimon
+        </h3>
 
-    <section class="card download">
-      <h2>Download</h2>
-      <p>Get the latest version of the addon below:</p>
-      <a href="https://link-hub.net/1443996/sVxp0b9LWwrD">Download Addon</a>
-      <br><br>
-      <a href="index.html">⬅ Back to Home</a>
-    </section>
-  </main>
+        <p style="text-align: center;">
+          <img style="display: block; margin-left: auto; margin-right: auto;" 
+               src="https://media.forgecdn.net/attachments/description/1385396/description_4bfb6b72-fcaa-4219-9ec8-549bd3249fc1.png" 
+               alt="" width="70%" height="auto">
+               <br><br>
+          <span style="text-decoration: underline;">
+              <img src="https://media.forgecdn.net/attachments/description/1385396/description_28928681-d0cb-4b1d-b637-3bdf471ce320.png" 
+               alt="" width="70%" height="auto"><br>
+          </span>
+          <br><span style="text-decoration: underline;">Obtain through Fishing</span>
+        </p>
 
-  <footer>
-    <p>Not affiliated with Mojang or HoYoverse. Fan-made project.</p>
-  </footer>
+        <p style="text-align: center;">
+          <span style="text-decoration: underline;">Behaves like allay</span>
+        </p>
+
+        <p style="text-align: center;">
+          
+        </p>
+
+        <!-- Elemental Slimes -->
+        <h3 style="text-align: left;">Monster: Elemental Slimes</h3>
+
+        <p style="text-align: center;">
+            <img style="display: block; margin-left: auto; margin-right: auto;" 
+                 src="https://media.forgecdn.net/attachments/description/1385396/description_b2da4b55-f07a-4fef-a2b1-218828222d8d.gif" 
+                 alt="" width="775" height="341">
+            <br><span style="text-decoration: underline;">Hp range = 50 to 100</span>
+        </p>
+
+        <p style="text-align: center;">
+          <span style="text-decoration: underline;">diamond and above equipment recommended to defeat them</span>
+        </p>
+
+        <p style="text-align: center;">
+          <span style="text-decoration: underline;">has chance to drop Paistone that can be used to upgrade weapons</span>
+        </p>
+
+        <h3 style="text-align: center;">
+          <strong><span style="text-decoration: underline;">
+            <img src="https://media.forgecdn.net/attachments/description/1385396/description_96a6c63c-fa21-4e6c-90fa-38944b2e5c90.png" 
+                 alt="" width="64" height="64">
+            <br><span style="color: #843fa1; text-decoration: underline;">Paistone</span>
+          </span></strong>
+        </h3>
+
+        <!-- Hilichurl -->
+        <h3 style="text-align: left;">Monster: Hilichurl</h3>
+
+        <p style="text-align: center;">
+            <img src="https://media.forgecdn.net/attachments/description/1385396/description_0230b0ca-3a6b-48ef-8aca-761a42d48e55.png" 
+                 alt="" width="195" height="465">
+        </p>
+
+        <p style="text-align: center;">
+          <span style="text-decoration: underline;">Hp range = 75 to 100</span>
+        </p>
+
+        <p style="text-align: center;">
+          <span style="text-decoration: underline;">iron and above equipment recommended to defeat them</span>
+        </p>
+
+        <p style="text-align: center;">
+          <span style="text-decoration: underline;">drop is useless , its better to avoid fight</span>
+        </p><br><br>
+
+        <!-- YouTube Video -->
+        <h3 style="text-align: left;">Watch YouTube video for better idea</h3><br>
+
+        <div style="text-align: center;">
+    <a href="https://www.youtube.com/watch?v=_68gNxo0efo" target="_blank">
+        <img 
+            src="https://img.youtube.com/vi/_68gNxo0efo/maxresdefault.jpg"
+            alt="Watch video on YouTube"
+            width="560"
+        >
+    </a>
+</div><br>
+
+        <!-- Discord -->
+        <h2 style="text-align: center;">Click on image to join</h2><br>
+
+        <p style="text-align: center;">
+          <a href="https://discord.gg/cywgrpgDGQ" target="_blank" rel="nofollow noopener">
+            <img src="https://media.forgecdn.net/attachments/description/1385396/description_b614caa7-16e1-4f2f-96b9-e41f233518de.png" 
+                 alt="" width="425" height="150">
+          </a>
+        </p>
+
+        <p style="text-align: center;">&nbsp;</p>
+
+        <!-- Bonus Fact -->
+        <h1 style="text-align: center;">Bonus Fact</h1>
+
+        <p>
+          after every version i will ask which character bundle you want in next update 
+          so hurry and vote for your character so join Discord to help it grow.&nbsp;
+        </p>
+
+        <p style="text-align: center;">
+          <img style="display: block; margin-left: auto; margin-right: auto;" 
+               src="https://media.forgecdn.net/attachments/description/1385396/description_3fc9fbeb-6e78-454e-9c49-4e436a219ffc.png" 
+               alt="" width="595" height="508">
+            {kit will include Outfit [Armor], Weapon and 1 elemental Skill to support your gameplay}
+        </p>
+      </section>
+      <!-- ==========================================================
+           END DESCRIPTION
+           ========================================================== -->
+
+      <!-- Features -->
+      <section class="card features">
+        <h2>Features</h2><br>
+        <ul>
+          <li>Custom Genshin-inspired weapons</li>
+          <li>Elemental effects (Pyro, Cryo, Electro, etc.)</li>
+          <li>New mobs and bosses</li>
+          <li>Survival-friendly balance</li>
+          <li>Bedrock Edition support</li>
+        </ul>
+      </section>
+
+      <!-- Addon Info -->
+      <section class="card">
+        <h2>Addon Info</h2><br>
+        <div class="info-grid">
+          <div class="info-box"><strong>Game Version:</strong><br> Minecraft Bedrock</div>
+          <div class="info-box"><strong>Category:</strong><br> Bedrock Addon</div>
+          <div class="info-box"><strong>Creator:</strong><br> Strawberry Productions</div>
+          <div class="info-box"><strong>Status:</strong><br> Ongoing</div>
+        </div>
+      </section>
+
+      <!-- Download -->
+      <section class="card download">
+        <h2>Download</h2><br>
+        <p>Get the latest version of the addon below:</p>
+        <a href="https://link-hub.net/1443996/sVxp0b9LWwrD">Download Addon</a>
+        <br><br>
+        <a href="index.html">⬅ Back to Home</a>
+      </section>
+    </main>
+
+    <footer>
+      <p>Not affiliated with Mojang or HoYoverse. Fan-made project.</p>
+    </footer>
+
+  </div>
+  <!-- End main-scroll -->
+
 </body>
 </html>
