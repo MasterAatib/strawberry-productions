@@ -48,6 +48,41 @@
       background: #0b2b42;
     }
 
+    /* ===== NEW STICKY NAVIGATION BAR ===== */
+    .navbar-top {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+      background: rgba(10, 10, 40, 0.99);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(136, 127, 255, 0.9);
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .nav-logo-link {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .nav-icon {
+      height: 100px;
+      width: auto;
+      display: block;
+    }
+
+    .nav-title {
+      height: 60px;
+      width: auto;
+      display: block;
+    }
+
     header {
       background: url("https://raw.githubusercontent.com/MasterAatib/strawberry-productions/refs/heads/main/images/coldwheels/coldwheels_background.jpg") center/cover;
       padding: 80px 20px;
@@ -154,7 +189,7 @@
       color: var(--muted);
       font-size: 0.9rem;
     }
-  
+
     .gallery {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -180,6 +215,10 @@
       header h1 {
         font-size: 2.5rem;
       }
+      
+      /* Responsive Navbar adjustments */
+      .nav-icon { height: 32px; }
+      .nav-title { height: 24px; }
     }
   </style>
 </head>
@@ -187,6 +226,14 @@
 
   <!-- ========== SCROLL CONTAINER ========== -->
   <div class="main-scroll">
+
+    <!-- ========== NEW STICKY NAVBAR ========== -->
+    <nav class="navbar-top">
+      <div class="nav-logo-link" onclick="window.close()">
+        <img src="../images/strawberryicon.png" alt="Strawberry Productions" class="nav-icon" />
+        <img src="../images/title.png" alt="Strawberry Productions" class="nav-title" />
+      </div>
+    </nav>
 
     <header>
       <div>
@@ -251,7 +298,8 @@
         <p>Get the latest version of Coldwheels below:</p>
         <a href="https://your-download-link-for-coldwheels">Download Addon</a>
         <br><br>
-        <a href="../index.html">⬅ Back to Home</a>
+        <!-- Changed this to window.close() to match the Genshin page behavior -->
+        <a href="javascript:window.close()">⬅ Back to Home</a>
       </section>
     </main>
 
