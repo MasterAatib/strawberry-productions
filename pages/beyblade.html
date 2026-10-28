@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Beyblade Power Levels</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@400&display=swap">
+<style>
+/* Layout: toolbar of power-level filters on top, then one grid of spawn-egg cards per power level, highest first. */
+:root {
+  color-scheme: dark;
+  --bg: #0f172a;
+  --surface: #111827;
+  --plate: #1f2933;
+  --ink: #e5e7eb;
+  --muted: #9ca3af;
+  --line: #374151;
+  --accent: #38bdf8;
+  --on-accent: #020617;
+  --b-low: #cbd5e1;
+  --b-mid: #38bdf8;
+  --b-high: #c084fc;
+  --b-ultra: #fb923c;
+  --b-max: #f87171;
+  --font-display: 'Chakra Petch', 'Segoe UI', system-ui, sans-serif;
+  --font-body: 'Barlow', 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+img { max-width: 100%; }
+
+body {
+  margin: 0;
+  background: linear-gradient(180deg, #020617, var(--bg));
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.45;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Prevents browser-level scrolling */
+}
+
+/* ===== STICKY NAVIGATION BAR (Now outside the scroll container) ===== */
+.navbar-top {
+  flex-shrink: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  background: rgba(10, 10, 40, 0.99);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(136, 127, 255, 0.9);
+  width: 100%;
+}
+
+.nav-logo-link {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.nav-icon {
+  height: 100px;
+  width: auto;
+  display: block;
+}
+
+.nav-title {
+  height: 60px;
+  width: auto;
+  display: block;
+}
+
+/* ===== INNER SCROLLABLE CONTAINER ===== */
+.main-scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* Blue custom scrollbar */
+.main-scroll::-webkit-scrollbar {
+  width: 10px;
+}
+.main-scroll::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 20px;
+}
+.main-scroll::-webkit-scrollbar-thumb:hover {
+  background: #0edbff;
+}
+.main-scroll::-webkit-scrollbar-track {
+  background: #020617;
+}
+
+/* Wrap handles the padding now */
+.wrap { 
+  max-width: 1180px; 
+  margin: 0 auto; 
+  padding: 32px 20px 56px; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 24px; 
+}
+
+.head { display: flex; flex-direction: column; gap: 8px; }
+.eyebrow {
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted);
+}
+h1 {
+  margin: 0; font-family: var(--font-display); font-weight: 700; text-transform: uppercase;
+  font-size: clamp(30px, 6vw, 48px); line-height: 1.05; letter-spacing: .02em; text-wrap: balance;
+}
+.lede { margin: 0; max-width: 62ch; color: var(--muted); }
+.lede code, .info code { font-family: var(--font-mono); font-size: .86em; }
+
+.toolbar { display: flex; flex-direction: column; gap: 14px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  appearance: none; cursor: pointer; display: inline-flex; align-items: baseline; gap: 8px;
+  padding: 7px 12px; border: 1px solid var(--line); border-radius: 8px;
+  background: var(--surface); color: var(--ink); font: inherit; line-height: 1.2;
+  transition: border-color 0.2s, background 0.2s;
+}
+.chip b { font-family: var(--font-display); font-weight: 700; font-size: 17px; font-variant-numeric: tabular-nums; }
+.chip span { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.chip:hover { border-color: var(--muted); }
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.chip[aria-pressed="true"] span { color: inherit; opacity: .85; }
+.chip .dot { width: 8px; height: 8px; border-radius: 50%; align-self: center; background: currentColor; }
+.chip .dot.low { background: var(--b-low); } .chip .dot.mid { background: var(--b-mid); }
+.chip .dot.high { background: var(--b-high); } .chip .dot.ultra { background: var(--b-ultra); }
+.chip .dot.max { background: var(--b-max); }
+.chip[aria-pressed="true"] .dot { background: var(--on-accent); }
+
+.controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.field {
+  height: 40px; padding: 0 12px; border: 1px solid var(--line); border-radius: 8px;
+  background: var(--surface); color: var(--ink); font: inherit; min-width: 0;
+}
+.field:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
+#q { flex: 1 1 220px; max-width: 360px; }
+#sort { flex: 0 0 auto; cursor: pointer; }
+.count { margin-left: auto; color: var(--muted); font-size: 14px; font-variant-numeric: tabular-nums; }
+.chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.groups { display: flex; flex-direction: column; gap: 32px; }
+.group { display: flex; flex-direction: column; gap: 12px; }
+.ghead { display: flex; align-items: baseline; gap: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+.gnum { font-family: var(--font-display); font-weight: 700; font-size: 30px; line-height: 1; font-variant-numeric: tabular-nums; }
+.gcap { color: var(--muted); font-size: 14px; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(268px, 1fr)); gap: 12px; }
+.card {
+  display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; align-items: center; gap: 12px;
+  padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s;
+}
+.card:hover { transform: translateY(-2px); }
+.plate { width: 64px; height: 64px; border-radius: 8px; background: var(--plate); display: grid; place-items: center; }
+.plate img { width: 64px; height: 64px; image-rendering: pixelated; display: block; }
+.info { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.info h3 { margin: 0; font-size: 17px; font-weight: 600; line-height: 1.2; overflow-wrap: anywhere; color: #fff; }
+.info code { color: var(--muted); overflow-wrap: anywhere; }
+.power { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; min-width: 44px; }
+.pl { font-family: var(--font-mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.pv { font-family: var(--font-display); font-weight: 700; font-size: 28px; line-height: 1; font-variant-numeric: tabular-nums; }
+.low { color: var(--b-low); } .mid { color: var(--b-mid); } .high { color: var(--b-high); }
+.ultra { color: var(--b-ultra); } .max { color: var(--b-max); }
+
+.empty { padding: 32px 0; color: var(--muted); }
+
+/* ===== DOWNLOAD SECTION ===== */
+.download-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 40px 20px;
+  text-align: center;
+  margin-top: 40px;
+}
+.download-card h2 {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.download-card p {
+  font-size: 1.1rem;
+  margin-bottom: 25px;
+  color: var(--muted);
+}
+.download-btn {
+  display: inline-block;
+  margin: 8px 6px;
+  padding: 14px 32px;
+  background: var(--accent);
+  color: var(--on-accent);
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.download-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(56, 189, 248, 0.4);
+}
+.download-btn.secondary {
+  background: transparent;
+  color: var(--accent);
+  border: 2px solid var(--accent);
+}
+.download-btn.secondary:hover {
+  background: rgba(56, 189, 248, 0.1);
+}
+
+/* ===== RESPONSIVE MOBILE TWEAKS ===== */
+@media (max-width: 768px) {
+  .wrap { padding: 20px 12px 40px; }
+  .nav-icon { height: 32px; }
+  .nav-title { height: 24px; }
+  .count { margin-left: 0; flex-basis: 100%; text-align: left; }
+  #q { max-width: none; }
+  
+  /* 3 boxes per line */
+  .grid { 
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 8px; 
+  }
+  .card { 
+    grid-template-columns: 1fr; 
+    padding: 10px 8px;
+    text-align: center;
+    justify-items: center;
+    gap: 6px;
+  }
+  .info code { display: none; } /* Hide ID on small screens */
+  .info h3 { font-size: 13px; line-height: 1.1; text-align: center; }
+  .plate { width: 56px; height: 56px; }
+  .plate img { width: 56px; height: 56px; }
+  .power { align-items: center; }
+  .pv { font-size: 20px; }
+}
+</style>
+</head>
+<body>
+
+  <!-- ========== STICKY NAVBAR (Outside the scroll area) ========== -->
+  <nav class="navbar-top">
+    <div class="nav-logo-link" onclick="window.close()">
+      <img src="../images/strawberryicon.png" alt="Strawberry Productions" class="nav-icon" />
+      <img src="../images/title.png" alt="Strawberry Productions" class="nav-title" />
+    </div>
+  </nav>
+
+  <!-- ========== SCROLLABLE CONTAINER ========== -->
+  <div class="main-scroll">
+    <main class="wrap">
+      
+      <header class="head">
+        <div class="eyebrow">Beyblade Classic Addon · [Total <span id="total"></span> Beyblade]</div>
+        <h1>Beyblade Classic</h1>
+        <p class="lede">Power level is each beyblade's is defined by <code>minecraft:health</code> value, higher the value more chances to win.</p>
+      </header>
+
+      <section class="toolbar" aria-label="Filters">
+        <div class="chips" id="chips"></div>
+        <div class="controls">
+          <input class="field" id="q" type="search" placeholder="Search by name" aria-label="Search beyblades" autocomplete="off">
+          <select class="field" id="sort" aria-label="Sort order">
+            <option value="high">Power: high to low</option>
+            <option value="low">Power: low to high</option>
+            <option value="name">Name: A to Z</option>
+          </select>
+          <div class="count" id="count" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <div class="groups" id="groups"></div>
+
+      <!-- ========== DOWNLOAD SECTION ========== -->
+      <section class="download-card">
+        <h2>Download</h2>
+        <p>Get the latest version of this addon below:</p>
+        <a href="#" class="download-btn">Download Addon</a>
+        <br><br>
+        <a href="javascript:window.close()" class="download-btn secondary">⬅ Back to Home</a>
+      </section>
+      
+    </main>
+  </div>
+  <!-- ========== END SCROLL CONTAINER ========== -->
+
+<script>
+const DATA = [
+  { id: "appolon", name: "Appolon", hp: 500 },
+  { id: "black_dranzer", name: "Black Dranzer", hp: 80 },
+  { id: "cerberus", name: "Burning Cerberus", hp: 90 },
+  { id: "cyber_draciel", name: "Cyber Draciel", hp: 90 },
+  { id: "cyber_dragoon", name: "Cyber Dragoon", hp: 90 },
+  { id: "cyber_dranzer", name: "Cyber Dranzer", hp: 90 },
+  { id: "cyber_driger", name: "Cyber Driger", hp: 90 },
+  { id: "draciel_f", name: "Draciel F", hp: 80 },
+  { id: "draciel_g", name: "Draciel G", hp: 95 },
+  { id: "draciel_ms", name: "Draciel MS", hp: 500 },
+  { id: "draciel_s", name: "Draciel S", hp: 75 },
+  { id: "draciel_v1", name: "Draciel V1", hp: 85 },
+  { id: "draciel_v2", name: "Draciel V2", hp: 90 },
+  { id: "dragoon_f", name: "Dragoon F", hp: 80 },
+  { id: "dragoon_g", name: "Dragoon G", hp: 95 },
+  { id: "dragoon_gt", name: "Dragoon GT", hp: 100 },
+  { id: "dragoon_ms", name: "Dragoon MS", hp: 500 },
+  { id: "dragoon_msuv", name: "Dragoon MSUV", hp: 400 },
+  { id: "dragoon_s", name: "Dragoon S", hp: 75 },
+  { id: "dragoon_v1", name: "Dragoon V1", hp: 85 },
+  { id: "dragoon_v2", name: "Dragoon V2", hp: 90 },
+  { id: "dranzer_f", name: "Dranzer F", hp: 80 },
+  { id: "dranzer_g", name: "Dranzer G", hp: 95 },
+  { id: "dranzer_gt", name: "Dranzer GT", hp: 100 },
+  { id: "dranzer_ms", name: "Dranzer MS", hp: 500 },
+  { id: "dranzer_s", name: "Dranzer S", hp: 75 },
+  { id: "dranzer_v1", name: "Dranzer V1", hp: 85 },
+  { id: "dranzer_v2", name: "Dranzer V2", hp: 90 },
+  { id: "driger_f", name: "Driger F", hp: 80 },
+  { id: "driger_g", name: "Driger G", hp: 95 },
+  { id: "driger_ms", name: "Driger MS", hp: 500 },
+  { id: "driger_s", name: "Driger S", hp: 75 },
+  { id: "driger_v1", name: "Driger V1", hp: 85 },
+  { id: "driger_v2", name: "Driger V2", hp: 90 },
+  { id: "falborg", name: "Falborg", hp: 75 },
+  { id: "flash_leopard_2", name: "Flash Leopard 2", hp: 85 },
+  { id: "galeon", name: "Galeon", hp: 75 },
+  { id: "galman", name: "Galman", hp: 75 },
+  { id: "galux", name: "Galux", hp: 75 },
+  { id: "galzzly", name: "Galzzly", hp: 75 },
+  { id: "gigars", name: "Gigars", hp: 500 },
+  { id: "metal_driger", name: "Metal Driger", hp: 200 },
+  { id: "poseidon", name: "Poseidon", hp: 500 },
+  { id: "rapid_eagle", name: "Rapid Eagle", hp: 95 },
+  { id: "rock_bison", name: "Rock Bison", hp: 95 },
+  { id: "seaborg_2", name: "Seaborg 2", hp: 80 },
+  { id: "sharkrash", name: "Sharkrash", hp: 85 },
+  { id: "strata_dragoon", name: "Strata Dragoon", hp: 85 },
+  { id: "strata_dragoon_g", name: "Strata Dragoon G", hp: 95 },
+  { id: "strata_dragoon_ms", name: "Strata Dragoon MS", hp: 500 },
+  { id: "trygator", name: "Trygator", hp: 75 },
+  { id: "trygle_2", name: "Trygle 2", hp: 95 },
+  { id: "tryhorn", name: "Tryhorn", hp: 75 },
+  { id: "trypio", name: "Trypio", hp: 80 },
+  { id: "vanishing_moot", name: "Vanishing Moot", hp: 85 },
+  { id: "venus", name: "Venus", hp: 500 },
+  { id: "vorte_ape_2", name: "Vortex Ape 2", hp: 85 },
+  { id: "wolborg_1", name: "Wolborg 1", hp: 75 },
+  { id: "wolborg_2", name: "Wolborg 2", hp: 80 },
+  { id: "wolborg_4", name: "Wolborg 4", hp: 95 },
+  { id: "wyborg", name: "Wyborg", hp: 75 },
+  { id: "zeus", name: "Zeus", hp: 500 }
+].map(d => ({ ...d, icon: `../images/beyblade/${d.id}.png` }));
+
+const band = hp => hp >= 500 ? 'max' : hp >= 200 ? 'ultra' : hp >= 95 ? 'high' : hp >= 85 ? 'mid' : 'low';
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const byName = (a, b) => a.name.localeCompare(b.name, undefined, { numeric: true });
+
+const levels = [...new Set(DATA.map(d => d.hp))].sort((a, b) => b - a);
+const state = { q: '', tier: null, sort: 'high' };
+
+document.getElementById('total').textContent = DATA.length;
+
+function card(d) {
+  const b = band(d.hp);
+  return `<article class="card">
+    <div class="plate"><img src="${d.icon}" width="64" height="64" alt="${esc(d.name)} spawn egg"></div>
+    <div class="info"><h3>${esc(d.name)}</h3><code>${esc(d.id)}</code></div>
+    <div class="power"><span class="pl">Power</span><span class="pv ${b}">${d.hp}</span></div>
+  </article>`;
+}
+
+function renderChips() {
+  const chips = [{ tier: null, label: 'All', n: DATA.length }]
+    .concat(levels.map(l => ({ tier: l, label: String(l), n: DATA.filter(d => d.hp === l).length })));
+  document.getElementById('chips').innerHTML = chips.map(c =>
+    `<button class="chip" type="button" data-tier="${c.tier ?? ''}" aria-pressed="${state.tier === c.tier}">` +
+    (c.tier === null ? '' : `<i class="dot ${band(c.tier)}"></i>`) +
+    `<b>${c.label}</b><span>${c.n}</span></button>`).join('');
+}
+
+function render() {
+  const q = state.q.trim().toLowerCase();
+  const rows = DATA.filter(d =>
+    (state.tier === null || d.hp === state.tier) &&
+    (!q || d.name.toLowerCase().includes(q) || d.id.includes(q.replace(/\s+/g, '_'))));
+  document.getElementById('count').textContent = `Showing ${rows.length} of ${DATA.length}`;
+  const out = document.getElementById('groups');
+  if (!rows.length) {
+    out.innerHTML = `<p class="empty">No beyblades match “${esc(state.q)}”. Clear the search or pick another power level.</p>`;
+    return;
+  }
+  if (state.sort === 'name') {
+    out.innerHTML = `<div class="grid">${rows.slice().sort(byName).map(card).join('')}</div>`;
+    return;
+  }
+  const order = state.sort === 'high' ? levels : levels.slice().reverse();
+  out.innerHTML = order.map(l => {
+    const g = rows.filter(d => d.hp === l).sort(byName);
+    if (!g.length) return '';
+    return `<section class="group"><header class="ghead"><span class="gnum ${band(l)}">${l}</span>` +
+      `<span class="gcap">power level · ${g.length} beyblade${g.length === 1 ? '' : 's'}</span></header>` +
+      `<div class="grid">${g.map(card).join('')}</div></section>`;
+  }).join('');
+}
+
+document.getElementById('chips').addEventListener('click', e => {
+  const btn = e.target.closest('.chip');
+  if (!btn) return;
+  state.tier = btn.dataset.tier === '' ? null : Number(btn.dataset.tier);
+  renderChips(); render();
+});
+document.getElementById('q').addEventListener('input', e => { state.q = e.target.value; render(); });
+document.getElementById('sort').addEventListener('change', e => { state.sort = e.target.value; render(); });
+
+renderChips();
+render();
+</script>
+</body>
+</html>
