@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TYBW-RP | Bleach Thousand Year Blood War Resource Pack</title>
+
+  <!-- Google Font (Genshin-like vibe kept for consistency) -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #111827;
+      --accent: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.4);
+      --text: #e5e7eb;
+      --muted: #ececec;
+      --border-light: rgba(255, 255, 255, 0.18); /* light border for download cards */
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #0d0822;
+      background: linear-gradient(180deg, #020617, var(--bg));
+      color: var(--text);
+      height: 100vh;
+      overflow: hidden; /* Prevents browser-level scrolling */
+    }
+
+    /* ---------- STICKY NAVIGATION ---------- */
+    .navbar-top {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+      background: rgba(10, 10, 40, 0.99);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(136, 127, 255, 0.9);
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .nav-logo-link {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .nav-icon {
+      height: 100px;
+      width: auto;
+      display: block;
+    }
+
+    .nav-title {
+      height: 60px;
+      width: auto;
+      display: block;
+    }
+
+    /* ---------- SCROLL CONTAINER ---------- */
+    .main-scroll {
+      height: 100vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    .main-scroll::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    .main-scroll::-webkit-scrollbar-thumb {
+      background: #38bdf8;
+      border-radius: 6px;
+    }
+
+    .main-scroll::-webkit-scrollbar-thumb:hover {
+      background: #0edbff;
+    }
+
+    .main-scroll::-webkit-scrollbar-track {
+      background: #020617;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    /* ---------- BASE CARD ---------- */
+    .card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 25px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    .card h2 {
+      font-family: 'Cinzel', serif;
+      margin-top: 0;
+      border-bottom: 1px solid #1f2933;
+      padding-bottom: 10px;
+    }
+
+    /* ---------- DESCRIPTION CARD ---------- */
+    .description-card p {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: #cbd5e1;
+      margin-top: 10px;
+    }
+
+    .description-card .tagline {
+      color: var(--accent);
+      font-weight: 500;
+      letter-spacing: 0.3px;
+    }
+
+    /* ---------- CHARACTER SHOWCASE CARD ---------- */
+    .character-card {
+      border-left: 3px solid var(--accent);
+      transition: border-color 0.3s ease;
+    }
+
+    /* Per-character accent (optional subtle shift) */
+    .character-card.ichigo   { border-left-color: #ff6b35; }
+    .character-card.uryu     { border-left-color: #3b82f6; }
+    .character-card.orihime  { border-left-color: #f59e0b; }
+    .character-card.chad     { border-left-color: #ef4444; }
+    .character-card.yhwach   { border-left-color: #a855f7; }
+    .character-card.aizen    { border-left-color: #8b5cf6; }
+    .character-card.rukia    { border-left-color: #c084fc; }
+    .character-card.renji    { border-left-color: #e11d48; }
+
+    .character-card h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.6rem;
+    }
+
+    .character-card .char-sub {
+      color: #94a3b8;
+      font-size: 0.9rem;
+      margin-top: 4px;
+      margin-bottom: 8px;
+    }
+
+    /* ---------- SCREENSHOT CAROUSEL ---------- */
+    .screenshot-wrapper {
+      position: relative;
+      margin-top: 16px;
+    }
+
+    .screenshot-track {
+      display: flex;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      scroll-snap-type: x mandatory;
+      padding: 10px 0 20px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .screenshot-track::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .screenshot-track::-webkit-scrollbar-thumb {
+      background: #38bdf8;
+      border-radius: 4px;
+    }
+
+    .screenshot-track::-webkit-scrollbar-track {
+      background: #020617;
+      border-radius: 4px;
+    }
+
+    .screenshot-track img {
+      flex: 0 0 100%;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1px solid #1f2933;
+      cursor: default;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      background: #1e293b;
+      scroll-snap-align: start;
+    }
+
+    .screenshot-track img:hover {
+      transform: scale(1.005);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+
+    /* Carousel Arrows */
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.6);
+      background: rgba(0,0,0,0.5);
+      color: #fff;
+      font-size: 1.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 5;
+      transition: background 0.2s ease, border-color 0.2s ease;
+      user-select: none;
+    }
+
+    .carousel-btn:hover {
+      background: rgba(56,189,248,0.6);
+      border-color: #38bdf8;
+    }
+
+    .carousel-btn.left  { left: -10px; }
+    .carousel-btn.right { right: -10px; }
+
+    /* ---------- NESTED DOWNLOAD CARD (inside each character) ---------- */
+    .nested-download {
+      margin-top: 18px;
+      padding: 18px 20px;
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.03);
+      text-align: center;
+    }
+
+    .nested-download h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      color: #e2e8f0;
+      margin-bottom: 6px;
+    }
+
+    .nested-download p {
+      font-size: 0.9rem;
+      color: #94a3b8;
+      margin-bottom: 12px;
+    }
+
+    .nested-download a {
+      display: inline-block;
+      margin: 4px 6px;
+      padding: 10px 22px;
+      background: var(--accent);
+      color: #000000;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .nested-download a:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px var(--accent-glow);
+    }
+
+    .nested-download a.secondary {
+      background: transparent;
+      color: var(--accent);
+      border: 2px solid var(--accent);
+    }
+
+    .nested-download a.secondary:hover {
+      background: rgba(56,189,248,0.1);
+    }
+
+    /* ---------- FOOTER ---------- */
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width: 600px) {
+      .nav-icon { height: 32px; }
+      .nav-title { height: 24px; }
+      .card { padding: 18px; }
+      .character-card h2 { font-size: 1.3rem; }
+      .nested-download a { padding: 8px 16px; font-size: 0.85rem; }
+    }
+
+    @media (max-width: 500px) {
+      .screenshot-track img { 
+        width: 100%; 
+        height: auto; 
+      }
+      
+      .carousel-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 1.1rem;
+      }
+      .carousel-btn.left  { left: -5px; }
+      .carousel-btn.right { right: -5px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Scrollable wrapper -->
+  <div class="main-scroll">
+
+    <!-- Sticky Navbar -->
+    <nav class="navbar-top">
+      <div class="nav-logo-link" onclick="window.close()">
+        <!-- Placeholder logo – replace with your actual TYBW-RP logo -->
+        <img src="https://placehold.co/100x100/0a0a2a/38bdf8?text=TYBW" alt="TYBW-RP" class="nav-icon" />
+        <img src="https://placehold.co/300x60/0a0a2a/38bdf8?text=TYBW-RP" alt="TYBW-RP" class="nav-title" />
+      </div>
+    </nav>
+
+    <main class="container">
+
+      <!-- 2. DESCRIPTION CARD -->
+      <section class="card description-card">
+        <h2>Bleach: Thousand Year Blood War – Resource Pack</h2>
+        <p>
+          <span class="tagline">TYBW-RP</span> is a UI-focused resource pack inspired by the 
+          <strong>Bleach: Thousand Year Blood War</strong> anime. It replaces the default Minecraft 
+          interface with a darker, sharper, and more atmospheric design that fits the 
+          Quincy vs. Soul Reaper aesthetic.
+        </p>
+        <p>
+          The pack currently focuses on <strong>menu backgrounds, buttons, icons, and HUD elements</strong>. 
+          Whether you're building in the Seireitei or exploring Hueco Mundo, TYBW-RP keeps the 
+          Bleach mood alive while you play.
+        </p>
+        <p style="font-size:0.9rem; color:#94a3b8; margin-top:12px;">
+          Below you’ll find character showcases with screenshots and download links. 
+          Scroll horizontally inside each showcase to view all images.
+        </p>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- 3–5. CHARACTER SHOWCASE CARDS (each with nested download)    -->
+      <!-- ============================================================ -->
+
+      <!-- ICHIGO -->
+      <section class="card character-card ichigo">
+        <h2>Ichigo Kurosaki</h2>
+        <div class="char-sub">Substitute Soul Reaper · True Bankai</div>
+
+        <div class="screenshot-wrapper">
+          <button class="carousel-btn left"  onclick="scrollGallery(this, -1)">&#10094;</button>
+          <div class="screenshot-track">
+            <!-- Replace these src attributes with your actual TYBW screenshots -->
+            <img src="https://placehold.co/800x450/1a1a2e/ff6b35?text=Ichigo+TYBW+1" alt="Ichigo TYBW 1">
+            <img src="https://placehold.co/800x450/1a1a2e/ff6b35?text=Ichigo+TYBW+2" alt="Ichigo TYBW 2">
+            <img src="https://placehold.co/800x450/1a1a2e/ff6b35?text=Ichigo+TYBW+3" alt="Ichigo TYBW 3">
+          </div>
+          <button class="carousel-btn right" onclick="scrollGallery(this, 1)">&#10095;</button>
+        </div>
+
+        <!-- Nested download card -->
+        <div class="nested-download">
+          <h3>Download TYBW-RP</h3>
+          <p>Get the resource pack for Minecraft Bedrock Edition.</p>
+          <a href="https://www.curseforge.com/minecraft-bedrock/texture-packs/tybw-rp" target="_blank" rel="noopener">CurseForge</a>
+          <a href="https://mcpedl.com/tybw-rp/" target="_blank" rel="noopener" class="secondary">MCPEDL</a>
+        </div>
+      </section>
+
+      <!-- URYU -->
+      <section class="card character-card uryu">
+        <h2>Uryu Ishida</h2>
+        <div class="char-sub">Quincy Archer · Antithesis</div>
+
+        <div class="screenshot-wrapper">
+          <button class="carousel-btn left"  onclick="scrollGallery(this, -1)">&#10094;</button>
+          <div class="screenshot-track">
+            <img src="https://placehold.co/800x450/1a1a2e/3b82f6?text=Uryu+TYBW+1" alt="Uryu TYBW 1">
+            <img src="https://placehold.co/800x450/1a1a2e/3b82f6?text=Uryu+TYBW+2" alt="Uryu TYBW 2">
+            <img src="https://placehold.co/800x450/1a1a2e/3b82f6?text=Uryu+TYBW+3" alt="Uryu TYBW 3">
+          </div>
+          <button class="carousel-btn right" onclick="scrollGallery(this, 1)">&#10095;</button>
+        </div>
+
+        <div class="nested-download">
+          <h3>Download TYBW-RP</h3>
+          <p>Get the resource pack for Minecraft Bedrock Edition.</p>
+          <a href="https://www.curseforge.com/minecraft-bedrock/texture-packs/tybw-rp" target="_blank" rel="noopener">CurseForge</a>
+          <a href="https://mcpedl.com/tybw-rp/" target="_blank" rel="noopener" class="secondary">MCPEDL</a>
+        </div>
+      </section>
+
+      <!-- ORIHIME -->
+      <section class="card character-card orihime">
+        <h2>Orihime Inoue</h2>
+        <div class="char-sub">Fullbringer · Shun Shun Rikka</div>
+
+        <div class="screenshot-wrapper">
+          <button class="carousel-btn left"  onclick="scrollGallery(this, -1)">&#10094;</button>
+          <div class="screenshot-track">
+            <img src="https://placehold.co/800x450/1a1a2e/f59e0b?text=Orihime+TYBW+1" alt="Orihime TYBW 1">
+            <img src="https://placehold.co/800x450/1a1a2e/f59e0b?text=Orihime+TYBW+2" alt="Orihime TYBW 2">
+            <img src="https://placehold.co/800x450/1a1a2e/f59e0b?text=Orihime+TYBW+3" alt="Orihime TYBW 3">
+          </div>
+          <button class="carousel-btn right" onclick="scrollGallery(this, 1)">&#10095;</button>
+        </div>
+
+        <div class="nested-download">
+          <h3>Download TYBW-RP</h3>
+          <p>Get the resource pack for Minecraft Bedrock Edition.</p>
+          <a href="https://www.curseforge.com/minecraft-bedrock/texture-packs/tybw-rp" target="_blank" rel="noopener">CurseForge</a>
+          <a href="https://mcpedl.com/tybw-rp/" target="_blank" rel="noopener" class="secondary">MCPEDL</a>
+        </div>
+      </section>
+
+      <!-- CHAD -->
+      <section class="card character-card chad">
+        <h2>Yasutora “Chad” Sado</h2>
+        <div class="char-sub">Fullbringer · Brazo Derecha de Gigante</div>
+
+        <div class="screenshot-wrapper">
+          <button class="carousel-btn left"  onclick="scrollGallery(this, -1)">&#10094;</button>
+          <div class="screenshot-track">
+            <img src="https://placehold.co/800x450/1a1a2e/ef4444?text=Chad+TYBW+1" alt="Chad TYBW 1">
+            <img src="https://placehold.co/800x450/1a1a2e/ef4444?text=Chad+TYBW+2" alt="Chad TYBW 2">
+            <img src="https://placehold.co/800x450/1a1a2e/ef4444?text=Chad+TYBW+3" alt="Chad TYBW 3">
+          </div>
+          <button class="carousel-btn right" onclick="scrollGallery(this, 1)">&#10095;</button>
+        </div>
+
+        <div class="nested-download">
+          <h3>Download TYBW-RP</h3>
+          <p>Get the resource pack for Minecraft Bedrock Edition.</p>
+          <a href="https://www.curseforge.com/minecraft-bedrock/texture-packs/tybw-rp" target="_blank" rel="noopener">CurseForge</a>
+          <a href="https://mcpedl.com/tybw-rp/" target="_blank" rel="noopener" class="secondary">MCPEDL</a>
+        </div>
+      </section>
+
+      <!-- YHWHACH -->
+      <section class="card character-card yhwach">
+        <h2>Yhwach</h2>
+        <div class="char-sub">Quincy King · Almighty</div>
+
+        <div class="screenshot-wrapper">
+          <button class="carousel-btn left"  onclick="scrollGallery(this, -1)">&#10094;</button>
+          <div class="screenshot-track">
+            <img src="https://placehold.co/800x450/1a1a2e/a855f7?text=Yhwach+TYBW+1" alt="Yhwach TYBW 1">
+            <img src="https://placehold.co/800x450/1a1a2e/a855f7?text=Yhwach+TYBW+2" alt="Yhwach TYBW 2">
+            <img src="https://placehold.co/800x450/1a1a2e/a855f7?text=Yhwach+TYBW+3" alt="Yhwach TYBW 3">
+          </div>
+          <button class="carousel-btn right" onclick="scrollGallery(this, 1)">&#10095;</button>
+        </div>
+
+        <div class="nested-download">
+          <h3>Download TYBW-RP</h3>
+          <p>Get the resource pack for Minecraft Bedrock Edition.</p>
+          <a href="https://www.curseforge.com/minecraft-bedrock/texture-packs/tybw-rp" target="_blank" rel="noopener">CurseForge</a>
+          <a href="https://mcpedl.com/tybw-rp/" target="_blank" rel="noopener" class="secondary">MCPEDL</a>
+        </div>
+      </section>
+
+      <!-- AIZEN -->
+      <section class="card character-card aizen">
+        <h2>Sosuke Aizen</h2>
+        <div class="char-sub">Former Captain · Kyoka Suigetsu</div>
+
+        <div class="screenshot-wrapper">
+          <button class="carousel-btn left"  onclick="scrollGallery(this, -1)">&#10094;</button>
+          <div class="screenshot-track">
+            <img src="https://placehold.co/800x450/1a1a2e/8b5cf6?text=Aizen+TYBW+1" alt="Aizen TYBW 1">
+            <img src="https://placehold.co/800x450/1a1a2e/8b5cf6?text=Aizen+TYBW+2" alt="Aizen TYBW 2">
+            <img src="https://placehold.co/800x450/1a1a2e/8b5cf6?text=Aizen+TYBW+3" alt="Aizen TYBW 3">
+          </div>
+          <button class="carousel-btn right" onclick="scrollGallery(this, 1)">&#10095;</button>
+        </div>
+
+        <div class="nested-download">
+          <h3>Download TYBW-RP</h3>
+          <p>Get the resource pack for Minecraft Bedrock Edition.</p>
+          <a href="https://www.curseforge.com/minecraft-bedrock/texture-packs/tybw-rp" target="_blank" rel="noopener">CurseForge</a>
+          <a href="https://mcpedl.com/tybw-rp/" target="_blank" rel="noopener" class="secondary">MCPEDL</a>
+        </div>
+      </section>
+
+      <!-- RUKIA -->
+      <section class="card character-card rukia">
+        <h2>Rukia Kuchiki</h2>
+        <div class="char-sub">13th Division Captain · Hakka no Togame</div>
+
+        <div class="screenshot-wrapper">
+          <button class="carousel-btn left"  onclick="scrollGallery(this, -1)">&#10094;</button>
+          <div class="screenshot-track">
+            <img src="https://placehold.co/800x450/1a1a2e/c084fc?text=Rukia+TYBW+1" alt="Rukia TYBW 1">
+            <img src="https://placehold.co/800x450/1a1a2e/c084fc?text=Rukia+TYBW+2" alt="Rukia TYBW 2">
+            <img src="https://placehold.co/800x450/1a1a2e/c084fc?text=Rukia+TYBW+3" alt="Rukia TYBW 3">
+          </div>
+          <button class="carousel-btn right" onclick="scrollGallery(this, 1)">&#10095;</button>
+        </div>
+
+        <div class="nested-download">
+          <h3>Download TYBW-RP</h3>
+          <p>Get the resource pack for Minecraft Bedrock Edition.</p>
+          <a href="https://www.curseforge.com/minecraft-bedrock/texture-packs/tybw-rp" target="_blank" rel="noopener">CurseForge</a>
+          <a href="https://mcpedl.com/tybw-rp/" target="_blank" rel="noopener" class="secondary">MCPEDL</a>
+        </div>
+      </section>
+
+      <!-- RENJI -->
+      <section class="card character-card renji">
+        <h2>Renji Abarai</h2>
+        <div class="char-sub">6th Division Lieutenant · Soo Zabimaru</div>
+
+        <div class="screenshot-wrapper">
+          <button class="carousel-btn left"  onclick="scrollGallery(this, -1)">&#10094;</button>
+          <div class="screenshot-track">
+            <img src="https://placehold.co/800x450/1a1a2e/e11d48?text=Renji+TYBW+1" alt="Renji TYBW 1">
+            <img src="https://placehold.co/800x450/1a1a2e/e11d48?text=Renji+TYBW+2" alt="Renji TYBW 2">
+            <img src="https://placehold.co/800x450/1a1a2e/e11d48?text=Renji+TYBW+3" alt="Renji TYBW 3">
+          </div>
+          <button class="carousel-btn right" onclick="scrollGallery(this, 1)">&#10095;</button>
+        </div>
+
+        <div class="nested-download">
+          <h3>Download TYBW-RP</h3>
+          <p>Get the resource pack for Minecraft Bedrock Edition.</p>
+          <a href="https://www.curseforge.com/minecraft-bedrock/texture-packs/tybw-rp" target="_blank" rel="noopener">CurseForge</a>
+          <a href="https://mcpedl.com/tybw-rp/" target="_blank" rel="noopener" class="secondary">MCPEDL</a>
+        </div>
+      </section>
+
+      <!-- Back button -->
+      <section class="card download" style="text-align:center;">
+        <a href="javascript:window.close()" class="secondary" style="display:inline-block; padding:14px 32px; background:transparent; color:var(--accent); border:2px solid var(--accent); border-radius:30px; text-decoration:none; font-weight:600;">⬅ Back to Home</a>
+      </section>
+
+    </main>
+  </div>
+  <!-- End main-scroll -->
+
+  <script>
+    /**
+     * Scroll the gallery inside a given character card.
+     * Each card has its own track, so we find the nearest .screenshot-track
+     * from the clicked button.
+     */
+    function scrollGallery(btn, direction) {
+      const wrapper = btn.closest('.screenshot-wrapper');
+      const track = wrapper.querySelector('.screenshot-track');
+      if (!track) return;
+
+      const imgWidth = track.querySelector('img')?.offsetWidth || 320;
+
+      track.scrollBy({
+        left: direction * imgWidth,
+        behavior: 'smooth'
+      });
+    }
+  </script>
+
+</body>
+</html>
