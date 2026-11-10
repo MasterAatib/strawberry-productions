@@ -227,6 +227,81 @@ h1 {
   background: rgba(56, 189, 248, 0.1);
 }
 
+/* ===== TEAMS SECTION ===== */
+.teams-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 32px 20px;
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.teams-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 14px 24px; }
+.teams-head h2 {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  margin: 0 0 6px;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.teams-head p { margin: 0; color: var(--muted); max-width: 58ch; }
+.teams-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.teams-tools .field { width: 220px; }
+.team-btn {
+  height: 40px; padding: 0 16px; border: 1px solid var(--line); border-radius: 8px;
+  background: transparent; color: var(--ink); font: inherit; cursor: pointer;
+  transition: border-color 0.2s;
+}
+.team-btn:hover { border-color: var(--muted); }
+.team-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.team-meta { margin: 0; color: var(--muted); font-size: 14px; font-variant-numeric: tabular-nums; }
+
+.team-list { display: flex; flex-direction: column; gap: 8px; }
+.team { border: 1px solid var(--line); border-radius: 10px; background: var(--bg); }
+.team[hidden] { display: none; }
+.team[open] { border-color: var(--muted); }
+.team summary {
+  list-style: none; cursor: pointer; border-radius: 10px;
+  display: grid; grid-template-columns: minmax(0, 1fr) auto auto 20px; align-items: center; gap: 16px;
+  padding: 14px 16px;
+}
+.team summary::-webkit-details-marker { display: none; }
+.team summary::after {
+  content: ""; width: 8px; height: 8px; justify-self: center; margin-top: -4px;
+  border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted);
+  transform: rotate(45deg); transition: transform 0.2s;
+}
+.team[open] summary::after { transform: rotate(-135deg); margin-top: 4px; }
+.team summary:hover { background: rgba(148, 163, 184, 0.06); }
+.team summary:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.team-title { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.team-title h3 { margin: 0; font-family: var(--font-display); font-size: 1.2rem; font-weight: 600; line-height: 1.2; overflow-wrap: anywhere; }
+.team-note { color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+.thumbs { display: flex; align-items: center; }
+.thumbs img {
+  width: 32px; height: 32px; border-radius: 8px; background: var(--plate);
+  border: 2px solid var(--bg); margin-left: -10px; image-rendering: pixelated;
+}
+.thumbs img:first-child { margin-left: 0; }
+.thumbs .more { margin-left: 6px; color: var(--muted); font-size: 13px; }
+.team-count { text-align: right; color: var(--muted); font-size: 13px; line-height: 1.1; }
+.team-count b { display: block; font-family: var(--font-display); font-size: 1.4rem; color: var(--ink); font-variant-numeric: tabular-nums; }
+
+.team-body { padding: 14px 16px 16px; border-top: 1px solid var(--line); }
+.team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 8px; }
+.member {
+  display: grid; grid-template-columns: 48px minmax(0, 1fr) auto; align-items: center; gap: 10px;
+  padding: 8px 10px 8px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface);
+}
+.member.hit { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.member .mplate { width: 48px; height: 48px; border-radius: 6px; background: var(--plate); display: grid; place-items: center; }
+.member img { width: 48px; height: 48px; image-rendering: pixelated; display: block; }
+.m-name { min-width: 0; font-size: 15px; font-weight: 600; line-height: 1.2; color: #fff; overflow-wrap: anywhere; }
+.m-pow { font-family: var(--font-display); font-weight: 700; font-size: 22px; line-height: 1; font-variant-numeric: tabular-nums; }
+.team-empty { margin: 0; padding: 8px 0; color: var(--muted); }
+
 /* ===== RESPONSIVE MOBILE TWEAKS ===== */
 @media (max-width: 768px) {
   .wrap { padding: 20px 12px 40px; }
@@ -253,6 +328,18 @@ h1 {
   .plate img { width: 56px; height: 56px; }
   .power { align-items: center; }
   .pv { font-size: 20px; }
+
+  /* Teams: compact on phones */
+  .teams-card { padding: 24px 14px; }
+  .teams-tools { width: 100%; }
+  .teams-tools .field { flex: 1 1 160px; width: auto; }
+  .thumbs { display: none; }
+  .team summary { grid-template-columns: minmax(0, 1fr) auto 20px; gap: 12px; padding: 12px; }
+  .team-body { padding: 12px; }
+  .team-grid { grid-template-columns: repeat(2, 1fr); }
+  .member { grid-template-columns: 1fr; justify-items: center; text-align: center; gap: 4px; padding: 10px 6px; }
+  .m-name { font-size: 13px; line-height: 1.1; }
+  .m-pow { font-size: 20px; }
 }
 </style>
 </head>
@@ -298,6 +385,23 @@ h1 {
         <a href="#" class="download-btn">Download Addon</a>
         <br><br>
         <a href="javascript:window.close()" class="download-btn secondary">⬅ Back to Home</a>
+      </section>
+
+      <!-- ========== TEAMS SECTION ========== -->
+      <section class="teams-card" id="teams">
+        <div class="teams-head">
+          <div>
+            <h2>Teams</h2>
+            <p>Open a team to see which beyblades it has. In game, pick the team from the Launcher menu to summon them.</p>
+          </div>
+          <div class="teams-tools">
+            <input class="field" id="teamSearch" type="search" placeholder="Find a beyblade" aria-label="Find a beyblade in the teams" autocomplete="off">
+            <button class="team-btn" id="teamToggle" type="button">Expand all</button>
+          </div>
+        </div>
+        <p class="team-meta" id="teamMeta" aria-live="polite"></p>
+        <div class="team-list" id="teamList"></div>
+        <p class="team-empty" id="teamEmpty" hidden>No team has a beyblade matching that name.</p>
       </section>
       
     </main>
@@ -430,6 +534,89 @@ document.getElementById('chips').addEventListener('click', e => {
 });
 document.getElementById('q').addEventListener('input', e => { state.q = e.target.value; render(); });
 document.getElementById('sort').addEventListener('change', e => { state.sort = e.target.value; render(); });
+
+// ===== TEAMS =====
+// Teams and members come from the add-on's scripts/custom/*.js menus, in the same order as the Launcher.
+// Unlisted: the script summons "strata_dragoon_v", which is not an entity; the 85 power Strata Dragoon is "strata_dragoon".
+const TEAMS = [
+  { name: "Bladebrakers (S)", note: "Classic Series", members: ["dragoon_s", "dragoon_f", "dranzer_s", "dranzer_f", "driger_s", "driger_f", "draciel_s", "draciel_f"] },
+  { name: "Bladebrakers (V)", note: "V-Force Series", members: ["dragoon_v1", "dragoon_v2", "dranzer_v1", "dranzer_v2", "driger_v1", "driger_v2", "draciel_v1", "draciel_v2"] },
+  { name: "Bladebrakers (G)", note: "G-Revolution Series", members: ["dragoon_g", "dragoon_gt", "dranzer_g", "dranzer_gt", "driger_g", "draciel_g"] },
+  { name: "BBA Revolution (MS)", note: "", members: ["dragoon_ms", "dranzer_ms", "driger_ms", "draciel_ms", "strata_dragoon_ms", "dragoon_msuv"] },
+  { name: "All Stars", note: "", members: ["trygle_2", "trygator", "tryhorn", "trypio", "rock_bison"] },
+  { name: "Demolition Boys", note: "", members: ["wolborg_1", "wolborg_2", "wolborg_4", "falborg", "seaborg_2", "wyborg"] },
+  { name: "White Tigers", note: "", members: ["galeon", "galux", "galman", "galzzly"] },
+  { name: "Team Psykicks", note: "", members: ["cyber_dragoon", "cyber_dranzer", "cyber_driger", "cyber_draciel"] },
+  { name: "Saint Shield", note: "", members: ["flash_leopard_2", "vorte_ape_2", "sharkrash", "vanishing_moot"] },
+  { name: "Bega", note: "", members: ["appolon", "poseidon", "gigars", "venus", "zeus"] },
+  { name: "Unlisted", note: "", members: ["strata_dragoon", "strata_dragoon_g", "metal_driger", "cerberus", "rapid_eagle", "black_dranzer"] }
+];
+const BY_ID = Object.fromEntries(DATA.map(d => [d.id, d]));
+const teamList = document.getElementById('teamList');
+const teamSearch = document.getElementById('teamSearch');
+const teamToggle = document.getElementById('teamToggle');
+
+function memberHtml(d) {
+  return `<div class="member" data-id="${d.id}">
+    <div class="mplate"><img src="${d.icon}" width="48" height="48" alt="" loading="lazy"></div>
+    <span class="m-name">${esc(d.name)}</span>
+    <span class="m-pow ${band(d.hp)}">${d.hp}</span>
+  </div>`;
+}
+
+function teamHtml(t, i) {
+  const ms = t.members.map(id => BY_ID[id]).filter(Boolean);
+  const hp = ms.map(m => m.hp);
+  const lo = Math.min(...hp), hi = Math.max(...hp);
+  const power = lo === hi ? `Power ${hi}` : `Power ${lo}–${hi}`;
+  const thumbs = ms.slice(0, 5).map(m => `<img src="${m.icon}" alt="" width="32" height="32" loading="lazy">`).join('') +
+    (ms.length > 5 ? `<span class="more">+${ms.length - 5}</span>` : '');
+  return `<details class="team" data-i="${i}">
+    <summary>
+      <div class="team-title"><h3>${esc(t.name)}</h3><span class="team-note">${t.note ? esc(t.note) + ' · ' : ''}${power}</span></div>
+      <div class="thumbs" aria-hidden="true">${thumbs}</div>
+      <div class="team-count"><b>${ms.length}</b>beyblades</div>
+    </summary>
+    <div class="team-body"><div class="team-grid">${ms.map(memberHtml).join('')}</div></div>
+  </details>`;
+}
+
+teamList.innerHTML = TEAMS.map(teamHtml).join('');
+
+function syncToggle() {
+  const all = [...teamList.querySelectorAll('.team:not([hidden])')];
+  teamToggle.textContent = all.length && all.every(el => el.open) ? 'Collapse all' : 'Expand all';
+}
+
+function filterTeams() {
+  const q = teamSearch.value.trim().toLowerCase();
+  let shown = 0;
+  teamList.querySelectorAll('.team').forEach(el => {
+    const t = TEAMS[Number(el.dataset.i)];
+    const hit = new Set(q ? t.members.filter(id => {
+      const d = BY_ID[id];
+      return d && (d.name.toLowerCase().includes(q) || d.id.includes(q.replace(/\s+/g, '_')));
+    }) : []);
+    el.hidden = !!q && hit.size === 0;
+    el.open = !!q && hit.size > 0;
+    el.querySelectorAll('.member').forEach(m => m.classList.toggle('hit', hit.has(m.dataset.id)));
+    if (!el.hidden) shown++;
+  });
+  document.getElementById('teamEmpty').hidden = shown > 0;
+  document.getElementById('teamMeta').textContent = q
+    ? `${shown} of ${TEAMS.length} teams have a match`
+    : `${TEAMS.length} teams · ${DATA.length} beyblades`;
+  syncToggle();
+}
+
+teamSearch.addEventListener('input', filterTeams);
+teamToggle.addEventListener('click', () => {
+  const open = teamToggle.textContent === 'Expand all';
+  teamList.querySelectorAll('.team:not([hidden])').forEach(el => { el.open = open; });
+  syncToggle();
+});
+teamList.addEventListener('toggle', syncToggle, true);
+filterTeams();
 
 renderChips();
 render();
